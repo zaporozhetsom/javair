@@ -1,4 +1,4 @@
-package BusinessLogic.Entities;
+package BusinessLogic.util;
 
 /**
  * Created by zom on 14.09.2017.

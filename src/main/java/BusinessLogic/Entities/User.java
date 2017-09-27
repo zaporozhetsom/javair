@@ -1,5 +1,7 @@
 package BusinessLogic.Entities;
 
+import BusinessLogic.util.UserRole;
+
 /**
  * Created by zom on 14.09.2017.
  */

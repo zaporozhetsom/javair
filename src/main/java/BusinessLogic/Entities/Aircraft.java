@@ -13,7 +13,15 @@ public class Aircraft {
     private Integer flightDeckMembersCount;
     private Integer cabinMembersCount;
     private Integer capacity;
+    private Airport aircraftLocation;
 
+    public Airport getAircraftLocation() {
+        return aircraftLocation;
+    }
+
+    public void setAircraftLocation(Airport aircraftLocation) {
+        this.aircraftLocation = aircraftLocation;
+    }
 
     public Integer getAircraftId() {
         return aircraftId;
