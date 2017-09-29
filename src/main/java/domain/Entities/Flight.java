@@ -1,6 +1,6 @@
-package BusinessLogic.Entities;
+package domain.Entities;
 
-import BusinessLogic.util.FlightType;
+import domain.util.FlightType;
 
 import java.sql.Timestamp;
 

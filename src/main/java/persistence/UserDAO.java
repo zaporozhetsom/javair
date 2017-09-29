@@ -1,6 +1,6 @@
-package DAO;
+package persistence;
 
-import BusinessLogic.Entities.User;
+import domain.Entities.User;
 
 import java.sql.SQLException;
 import java.util.List;

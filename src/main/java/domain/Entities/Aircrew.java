@@ -1,6 +1,6 @@
-package BusinessLogic.Entities;
+package domain.Entities;
 
-import BusinessLogic.util.UserRole;
+import domain.util.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;

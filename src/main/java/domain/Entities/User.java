@@ -1,6 +1,6 @@
-package BusinessLogic.Entities;
+package domain.Entities;
 
-import BusinessLogic.util.UserRole;
+import domain.util.UserRole;
 
 /**
  * Created by zom on 14.09.2017.

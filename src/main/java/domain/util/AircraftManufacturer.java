@@ -1,4 +1,4 @@
-package BusinessLogic.util;
+package domain.util;
 
 /**
  * Created by zom on 18.09.2017.

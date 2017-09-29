@@ -1,7 +1,7 @@
-package DAO.mysql;
+package persistence.mysql;
 
-import BusinessLogic.Entities.User;
-import DAO.UserDAO;
+import domain.Entities.User;
+import persistence.UserDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

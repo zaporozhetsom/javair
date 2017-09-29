@@ -1,8 +1,6 @@
 package javairTests;
 
-import BusinessLogic.Entities.Flight;
-import BusinessLogic.Entities.Javair;
-import org.junit.Assert;
+import domain.Entities.Javair;
 import org.junit.Test;
 
 /**

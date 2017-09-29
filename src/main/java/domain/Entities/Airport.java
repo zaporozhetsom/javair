@@ -1,4 +1,4 @@
-package BusinessLogic.Entities;
+package domain.Entities;
 
 /**
  * Created by zom on 07.09.2017.

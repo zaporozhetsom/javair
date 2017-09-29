@@ -1,7 +1,7 @@
-package DAO.mysql;
+package persistence.mysql;
 
-import DAO.DAOFactory;
-import DAO.UserDAO;
+import persistence.DAOFactory;
+import persistence.UserDAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
