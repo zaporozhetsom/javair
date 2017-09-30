@@ -1,7 +1,7 @@
-package persistence.mysql;
+package persistence.dao.impl;
 
 import domain.Entities.User;
-import persistence.UserDAO;
+import persistence.dao.interfaces.UserDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,12 +12,11 @@ import java.util.List;
 /**
  * Created by zom on 20.09.2017.
  */
-public class MySqlUserDAO implements UserDAO {
+public class UserDAOImpl implements UserDAO {
 
-    private final Connection connection;
+    private Connection connection;
 
-    public MySqlUserDAO(Connection connection) {
-        this.connection = connection;
+    public UserDAOImpl() {
     }
 
     @Override
@@ -36,7 +35,7 @@ public class MySqlUserDAO implements UserDAO {
         resultSet.next();
 
         User user = new User();
-        user.setUserId(resultSet.getInt("user_id"));
+        user.setId(resultSet.getInt("user_id"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
         user.setRole(resultSet.getString("user_role"));

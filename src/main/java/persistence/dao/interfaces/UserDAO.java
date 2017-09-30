@@ -1,4 +1,4 @@
-package persistence;
+package persistence.dao.interfaces;
 
 import domain.Entities.User;
 

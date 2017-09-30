@@ -1,70 +1,110 @@
 package domain.Entities;
 
+import domain.Entity;
 import domain.util.UserRole;
 
 /**
  * Created by zom on 14.09.2017.
  */
-public class User {
-    private Integer userId;
+public class User implements Entity {
+    private Integer id;
     private String firstName;
     private String lastName;
     private UserRole role;
     private String login;
     private String password;
 
-    public Integer getUserId() {
-        return userId;
+    public static class Builder {
+        private Integer id;
+        private String firstName;
+        private String lastName;
+        private UserRole role;
+        private String login;
+        private String password;
+
+        public Builder() {
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder role(UserRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public User build () {
+            return new User(this);
+        }
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.role = builder.role;
+        this.login = builder.login;
+        this.password = builder.password;
+
     }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = UserRole.valueOf(role);
-    }
 
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role=" + role +
