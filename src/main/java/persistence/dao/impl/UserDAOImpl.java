@@ -1,6 +1,7 @@
 package persistence.dao.impl;
 
-import domain.Entities.User;
+import domain.entities.User;
+import domain.util.UserRole;
 import persistence.dao.interfaces.UserDAO;
 
 import java.sql.Connection;
@@ -34,13 +35,20 @@ public class UserDAOImpl implements UserDAO {
         ResultSet resultSet = statement.executeQuery();
         resultSet.next();
 
-        User user = new User();
-        user.setId(resultSet.getInt("user_id"));
-        user.setFirstName(resultSet.getString("first_name"));
-        user.setLastName(resultSet.getString("last_name"));
-        user.setRole(resultSet.getString("user_role"));
-        user.setLogin(resultSet.getString("login"));
-        user.setPassword(resultSet.getString("password"));
+        User user = new User.Builder() //todo clean this up!!!
+                .id(1)
+                .firstName("John")
+                .lastName("Peterson")
+                .login("Jjjjj")
+                .password("QWERTY")
+                .role(UserRole.ADMIN)
+                .build();
+//        user.setId(resultSet.getInt("user_id"));
+//        user.setFirstName(resultSet.getString("first_name"));
+//        user.setLastName(resultSet.getString("last_name"));
+//        user.setRole(resultSet.getString("user_role"));
+//        user.setLogin(resultSet.getString("login"));
+//        user.setPassword(resultSet.getString("password"));
         return user;
     }
 

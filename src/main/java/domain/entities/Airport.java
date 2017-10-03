@@ -1,4 +1,4 @@
-package domain.Entities;
+package domain.entities;
 
 import domain.Entity;
 

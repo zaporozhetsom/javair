@@ -1,17 +1,14 @@
-package persistence.dao.interfaces;
+package service;
 
 import domain.entities.User;
 import exception.PersistenceException;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by zom on 20.09.2017.
+ * Created by zom on 03.10.2017.
  */
-public interface UserDAO extends DAO<User> {
-
+public interface UserService extends Service<User> {
     @Override
     void create(User object) throws PersistenceException;
 
@@ -28,7 +25,7 @@ public interface UserDAO extends DAO<User> {
     List<User> getAll() throws PersistenceException;
 
     @Override
-    List<User> getPart(int from) throws PersistenceException;
+    List<User> getPart(Integer from, Integer to) throws PersistenceException;
 
     @Override
     Integer getCount() throws PersistenceException;
@@ -36,16 +33,7 @@ public interface UserDAO extends DAO<User> {
     @Override
     Integer getItemsPerPage();
 
-    @Override
-    void setConnection(Connection connection);
-
-    @Override
-    void closeConnection();
-
-    @Override
-    void deleteAllRecordsAndRestartSequence() throws PersistenceException;
-
-    User getUserByLoginAndPassword(String login, String password) throws PersistenceException;
+    User getUserByLoginPassword(String login, String password) throws PersistenceException;
 
     boolean isUserExists(String login, String email) throws PersistenceException;
 
