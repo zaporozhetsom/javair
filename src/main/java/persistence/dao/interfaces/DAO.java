@@ -26,7 +26,7 @@ public interface DAO<T extends Entity> {
 
     Integer getCount() throws PersistenceException;
 
-    Integer getItemsPerPage();
+    Integer getRecordsOnPage();
 
     void setConnection(Connection connection);
 

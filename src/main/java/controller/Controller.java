@@ -36,7 +36,7 @@ public class Controller extends HttpServlet {
             String jspView = CommandFactory.getInstance().getCommand(path).execute(request);
             request.getRequestDispatcher("/WEB-INF" + jspView).forward(request, response);
         } else {
-            String page = CommandUtil.getInstance().setErrorPage("404", "Not found", request);
+            String page = CommandHelper.getInstance().setErrorPage("404", "Not found", request);
             request.getRequestDispatcher(page).forward(request, response);
         }
     }

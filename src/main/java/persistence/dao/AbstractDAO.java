@@ -3,6 +3,7 @@ package persistence.dao;
 import domain.Entity;
 import exception.PersistenceException;
 import org.apache.log4j.Logger;
+import persistence.connection.ConnectionPool;
 import persistence.dao.interfaces.DAO;
 
 import java.sql.*;
@@ -15,45 +16,61 @@ import java.util.Properties;
 public abstract class AbstractDAO<T extends Entity> implements DAO<T> {
     protected final Logger log = Logger.getLogger(getClass());
 
-    protected final Properties queries;
-    protected final int itemsPerPage;
-    protected Connection transactionConnection = null;
+    protected final Properties sqlQuery;
+    protected final Integer recordsOnPage;
+    protected Connection connectionForTransaction = null;
 
-    public AbstractDAO(Properties queries, int itemsPerPage) {
-        this.queries = queries;
-        this.itemsPerPage = itemsPerPage;
+    public AbstractDAO(Properties sqlQuery, Integer recordsOnPage) {
+        this.sqlQuery = sqlQuery;
+        this.recordsOnPage = recordsOnPage;
+    }
+
+    private String getSqlQueryCREATE() {
+        return sqlQuery.getProperty("create");
     }
 
     @Override
     public Integer createAndGetId(T object) throws PersistenceException {
-        String sql = getCreateQuery();
-        int id = 0;
+        String sql = getSqlQueryCREATE();
+        Integer id = 0;
 
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            prepareStatementForInsert(statement, object);
+            prepareStatementINSERT(statement, object);
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     id = (int) resultSet.getLong(1);
                 } else {
-                    throw new SQLException("No ID obtained");
+                    throw new SQLException("No ID received");
                 }
             }
         } catch (SQLException e) {
-            log.error("Creating object exception", e);
-            throw new PersistenceException("Creating object exception");
+            log.error("Create object exception", e);
+            throw new PersistenceException("Create object exception");
         } finally {
             try {
                 if (connection.getAutoCommit()) {
                     connection.close();
                 }
             } catch (SQLException e) {
-                log.info("Closing connection exception", e);
+                log.info("Close connection fail", e);
             }
         }
         return id;
+    }
+
+    protected abstract void prepareStatementINSERT(PreparedStatement statement, T object) throws PersistenceException;
+
+    protected Connection getConnection() throws PersistenceException {
+        Connection connection;
+        if (connectionForTransaction == null) {
+            connection = ConnectionPool.getInstance().getConnection();
+        } else {
+            connection = connectionForTransaction;
+        }
+        return connection;
     }
 
     @Override
@@ -91,20 +108,19 @@ public abstract class AbstractDAO<T extends Entity> implements DAO<T> {
         return null;
     }
 
-    @Override
-    public Integer getItemsPerPage() {
+    public Integer getRecordsOnPage() {
         return null;
     }
 
     @Override
     public void setConnection(Connection connection) {
-        this.transactionConnection = connection;
+        this.connectionForTransaction = connection;
     }
 
     @Override
     public void closeConnection() {
         try {
-            this.transactionConnection.close();
+            this.connectionForTransaction.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

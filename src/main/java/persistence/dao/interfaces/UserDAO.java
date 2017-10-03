@@ -33,8 +33,7 @@ public interface UserDAO extends DAO<User> {
     @Override
     Integer getCount() throws PersistenceException;
 
-    @Override
-    Integer getItemsPerPage();
+    Integer getRecordsOnPage();
 
     @Override
     void setConnection(Connection connection);

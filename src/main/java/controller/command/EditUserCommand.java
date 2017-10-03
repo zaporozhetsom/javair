@@ -16,7 +16,7 @@
 //        if ("POST".equals(request.getMethod())) {
 //            return executePost(request);
 //        }
-//        return CommandUtil.getInstance().setErrorPage("500", "Unknown method", request);
+//        return CommandHelper.getInstance().setErrorPage("500", "Unknown method", request);
 //    }
 //
 //    private String executeGet(HttpServletRequest request) {
@@ -25,7 +25,7 @@
 //            users = ServiceFactoryJDBCImpl.getInstance().getUserService().getAll();
 //            request.setAttribute("users", users);
 //        } catch (PersistenceException e) {
-//            return CommandUtil.getInstance().setErrorPage(e.getMessage(), request);
+//            return CommandHelper.getInstance().setErrorPage(e.getMessage(), request);
 //        }
 //        request.setAttribute("title", Localization.CARS_HEADER);
 //        request.setAttribute("headerText", Localization.CARS_HEADER);
@@ -34,12 +34,12 @@
 //
 //    private String executePost(HttpServletRequest request) {
 //        String id = request.getParameter("userId");
-//        int userId = CommandUtil.getInstance().parseInteger(id);
+//        int userId = CommandHelper.getInstance().parseInteger(id);
 //        if (userId != 0) {
 //            try {
 //                ServiceFactoryJDBCImpl.getInstance().getUserService().setAdmin(userId);
 //            } catch (PersistenceException e) {
-//                return CommandUtil.getInstance().setErrorPage(e.getMessage(), request);
+//                return CommandHelper.getInstance().setErrorPage(e.getMessage(), request);
 //            }
 //        }
 //        return executeGet(request);

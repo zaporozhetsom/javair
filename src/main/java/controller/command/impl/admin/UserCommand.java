@@ -3,6 +3,7 @@ package controller.command.impl.admin;
 import controller.command.*;
 import domain.entities.User;
 import exception.PersistenceException;
+import service.factory.ServiceFactoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserCommand implements Command {
             users = ServiceFactoryImpl.getInstance().getUserService().getAll();
             request.setAttribute("users", users);
         } catch (PersistenceException e) {
-//            return CommandUtil.getInstance().setErrorPage(e.getMessage(), request);
+//            return CommandHelper.getInstance().setErrorPage(e.getMessage(), request);
         }
 //        request.setAttribute("title", Localization.CARS_HEADER);
 //        request.setAttribute("headerText", Localization.CARS_HEADER);

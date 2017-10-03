@@ -2,6 +2,8 @@ package persistence.dao.impl;
 
 import domain.entities.User;
 import domain.util.UserRole;
+import exception.PersistenceException;
+import persistence.dao.AbstractDAO;
 import persistence.dao.interfaces.UserDAO;
 
 import java.sql.Connection;
@@ -9,61 +11,78 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by zom on 20.09.2017.
  */
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
-    private Connection connection;
-
-    public UserDAOImpl() {
+    public UserDAOImpl(Properties sqlQuery, Integer recordsOnPage) {
+        super(sqlQuery, recordsOnPage);
     }
 
     @Override
-    public User create() {
+    public User getUserByLoginAndPassword(String login, String password) throws PersistenceException {
         return null;
     }
 
     @Override
-    public User read(Integer key) throws SQLException {
-        String sql = "SELECT * FROM javair.user WHERE user_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
+    public boolean isUserExists(String login, String email) throws PersistenceException {
+        return false;
+    }
 
-        statement.setInt(1,key);
+    @Override
+    public void setAdmin(Integer id) throws PersistenceException {
 
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
+    }
 
-        User user = new User.Builder() //todo clean this up!!!
-                .id(1)
-                .firstName("John")
-                .lastName("Peterson")
-                .login("Jjjjj")
-                .password("QWERTY")
-                .role(UserRole.ADMIN)
-                .build();
+    @Override
+    protected void prepareStatementINSERT(PreparedStatement statement, User object) throws PersistenceException {
+        try {
+            statement.setString(1, object.getFirstName());
+            statement.setString(2, object.getLastName());
+            statement.setString(3, object.getRole().name());
+            statement.setString(4, object.getLogin());
+            statement.setString(5, object.getPassword());
+        } catch (SQLException e) {
+            log.error("Prepare statement for insert exception.", e);
+            throw new PersistenceException("Insertion exception");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+//    public User read(Integer key) throws SQLException {
+//        String sql = "SELECT * FROM javair.user WHERE user_id = ?;";
+//        PreparedStatement statement = connection.prepareStatement(sql);
+//
+//        statement.setInt(1,key);
+//
+//        ResultSet resultSet = statement.executeQuery();
+//        resultSet.next();
+//
+//        User user = new User.Builder() //todo clean this up!!!
+//                .id(1)
+//                .firstName("John")
+//                .lastName("Peterson")
+//                .login("Jjjjj")
+//                .password("QWERTY")
+//                .role(UserRole.ADMIN)
+//                .build();
 //        user.setId(resultSet.getInt("user_id"));
 //        user.setFirstName(resultSet.getString("first_name"));
 //        user.setLastName(resultSet.getString("last_name"));
 //        user.setRole(resultSet.getString("user_role"));
 //        user.setLogin(resultSet.getString("login"));
 //        user.setPassword(resultSet.getString("password"));
-        return user;
-    }
-
-    @Override
-    public void update(User user) {
-
-    }
-
-    @Override
-    public void delete(User user) {
-
-    }
-
-    @Override
-    public List<User> getAll() throws SQLException {
-        return null;
-    }
+//        return user;
+//    }
 }
