@@ -11,10 +11,10 @@ import java.util.List;
 public interface Service<T extends Entity> {
     void create(T object) throws PersistenceException;
     void update(T object) throws PersistenceException;
-    void delete(Integer id) throws PersistenceException;
-    T getById(Integer id) throws PersistenceException;
-    List<T> getAll() throws PersistenceException;
-    List<T> getPart(Integer from, Integer to) throws PersistenceException;
+    void delete(Long id) throws PersistenceException;
+    T getById(Long id) throws PersistenceException;
+    List<T> getAll(String tableName) throws PersistenceException;
+    List<T> getPart(Long from, Long to) throws PersistenceException;
     Integer getCount() throws PersistenceException;
     Integer getItemsPerPage();
 }

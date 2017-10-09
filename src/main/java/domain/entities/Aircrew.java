@@ -2,6 +2,13 @@ package domain.entities;
 
 import domain.Entity;
 import domain.util.UserRole;
+import exception.IllegalEntityStateException;
+import exception.NoSuchUserException;
+import exception.PersistenceException;
+import org.apache.log4j.Logger;
+import service.factory.ServiceFactory;
+import service.factory.ServiceFactoryImpl;
+import service.impl.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,75 +17,71 @@ import java.util.List;
  * Aircrew cannot be modified if aircrewConfirmed is set to true
  */
 public class Aircrew implements Entity {
-    private Integer id;
-    private Flight flight;
+    private Long id;
     private boolean aircrewConfirmed;
-    private User captain;
-    private User firstOfficer;
-    private User secondOfficer;
-    private User purser;
-    private User flightMedic;
-    private static final int flightAttendantsCount = 6;
-    private List<User> flightAttendants = new ArrayList<>(flightAttendantsCount);
+    private Long captainUserId;
+    private Long firstOfficerUserId;
+    private Long secondOfficerUserId;
+    private Long purserUserId;
+    private Long flightMedicUserId;
+    private static final int FLIGHT_ATTENDANTS_COUNT = 6;
+    private List<Long> flightAttendantsUserIds = new ArrayList<>(FLIGHT_ATTENDANTS_COUNT);
+
+    final Logger log = Logger.getLogger(Aircrew.class.getClass());
 
     public static class Builder {
-        private Integer id;
-        private Flight flight;
-        private User captain;
-        private User firstOfficer;
-        private User secondOfficer;
-        private User purser;
-        private User flightMedic;
-        private List<User> flightAttendants = new ArrayList<>(flightAttendantsCount);
+        private Long id;
+        private Long captainUserId;
+        private Long firstOfficerUserId;
+        private Long secondOfficerUserId;
+        private Long purserUserId;
+        private Long flightMedicUserId;
+        private List<Long> flightAttendantsUserIds = new ArrayList<>(FLIGHT_ATTENDANTS_COUNT);
 
-        public Builder id(Integer value) {
+        public Builder id(Long value) {
             this.id = value;
             return this;
         }
 
-        public Builder flight(Flight value) {
-            this.flight = value;
-            return this;
-        }
 
-        public Builder captain(User value) {
+        public Builder captain(Long value) throws PersistenceException {
             if (isProperUserRole(value, UserRole.CAPTAIN)) {
-                this.captain = value;
+                this.captainUserId = value;
             }
             return this;
         }
 
-        public Builder firstOfficer(User value) {
+        public Builder firstOfficer(Long value) throws PersistenceException {
             if (isProperUserRole(value, UserRole.FIRST_OFFICER)) {
-                this.firstOfficer = value;
+                this.firstOfficerUserId = value;
             }
             return this;
         }
 
-        public Builder secondOfficer(User value) {
+        public Builder secondOfficer(Long value) throws PersistenceException {
             if (isProperUserRole(value, UserRole.SECOND_OFFICER)) {
-                this.secondOfficer = value;
+                this.secondOfficerUserId = value;
             }
             return this;
         }
 
-        public Builder purser(User value) {
+        public Builder purser(Long value) throws PersistenceException {
             if (isProperUserRole(value, UserRole.PURSER)) {
-                this.purser = value;
+                this.purserUserId = value;
             }
             return this;
         }
 
-        public Builder flightMedic(User value) {
+        public Builder flightMedic(Long value) throws PersistenceException {
             if (isProperUserRole(value, UserRole.FLIGHT_MEDIC)) {
-                this.flightMedic = value;
+                this.flightMedicUserId = value;
             }
             return this;
         }
 
-        public Builder flightAttendant(User value) {
-            if ((this.flightAttendants.size() < flightAttendantsCount) && (isProperUserRole(value, UserRole.FLIGHT_ATTENDANT))) {
-                this.flightAttendants.add(value);
+        public Builder flightAttendant(Long value) throws PersistenceException {
+            if ((this.flightAttendantsUserIds.size() < FLIGHT_ATTENDANTS_COUNT) && (isProperUserRole(value, UserRole.FLIGHT_ATTENDANT))) {
+                this.flightAttendantsUserIds.add(value);
             }
             return this;
         }
@@ -92,24 +95,19 @@ public class Aircrew implements Entity {
     private Aircrew(Builder builder) {
         aircrewConfirmed = false;
         this.id = builder.id;
-        this.flight = builder.flight;
-        this.captain = builder.captain;
-        this.firstOfficer = builder.firstOfficer;
-        this.secondOfficer = builder.secondOfficer;
-        this.purser = builder.purser;
-        this.flightMedic = builder.flightMedic;
-        this.flightAttendants = builder.flightAttendants;
+        this.captainUserId = builder.captainUserId;
+        this.firstOfficerUserId = builder.firstOfficerUserId;
+        this.secondOfficerUserId = builder.secondOfficerUserId;
+        this.purserUserId = builder.purserUserId;
+        this.flightMedicUserId = builder.flightMedicUserId;
+        this.flightAttendantsUserIds = builder.flightAttendantsUserIds;
     }
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-
-    public Flight getFlight() {
-        return flight;
-    }
 
 
     public boolean isAircrewConfirmed() {
@@ -117,69 +115,80 @@ public class Aircrew implements Entity {
     }
 
 
-    public User getCaptain() {
-        return captain;
+    public Long getCaptainUserId() {
+        return captainUserId;
     }
 
 
-    public User getFirstOfficer() {
-        return firstOfficer;
+    public Long getFirstOfficerUserId() {
+        return firstOfficerUserId;
     }
 
-    public User getSecondOfficer() {
-        return secondOfficer;
-    }
-
-
-    public User getPurser() {
-        return purser;
+    public Long getSecondOfficerUserId() {
+        return secondOfficerUserId;
     }
 
 
-    public User getFlightMedic() {
-        return flightMedic;
+    public Long getPurserUserId() {
+        return purserUserId;
     }
 
 
-    public List<User> getFlightAttendants() {
-        return flightAttendants;
+    public Long getFlightMedicUserId() {
+        return flightMedicUserId;
     }
 
-    public void changeCrewMember(User member, UserRole role) {
-        if (!isAircrewConfirmed() && role.equals(member.getRole())) {
+
+    public List<Long> getFlightAttendantsUserIds() {
+        return flightAttendantsUserIds;
+    }
+
+    public void changeCrewMember(Long userId, UserRole role) throws PersistenceException {
+        User user = getUserById(userId);
+        if (!isAircrewConfirmed() && role.equals(user.getRole())) {
             switch (role) {
                 case CAPTAIN:
-                    captain = member;
+                    captainUserId = userId;
                     break;
                 case FIRST_OFFICER:
-                    firstOfficer = member;
+                    firstOfficerUserId = userId;
                     break;
                 case SECOND_OFFICER:
-                    secondOfficer = member;
+                    secondOfficerUserId = userId;
                     break;
                 case PURSER:
-                    purser = member;
+                    purserUserId = userId;
                     break;
                 case FLIGHT_MEDIC:
-                    flightMedic = member;
+                    flightMedicUserId = userId;
                     break;
             }
         }
     }
 
+    private static User getUserById(Long userId) throws PersistenceException {
+        return ServiceFactoryImpl.getInstance().getUserService().getById(userId);
+    }
 
-    public void changeFlightAttendant(User oldFlightAttendant, User newFlightAttendant) {
+
+    public void changeFlightAttendant(Long oldFlightAttendantId, Long newFlightAttendantId) throws NoSuchUserException, IllegalEntityStateException {
         if (!isAircrewConfirmed()) {
-            for (User flightAttendant :
-                    flightAttendants) {
-                if (oldFlightAttendant.equals(flightAttendant)) {
-                    flightAttendants.remove(flightAttendant);
-                    flightAttendants.add(newFlightAttendant);
+            for (Long flightAttendant :
+                    flightAttendantsUserIds) {
+                if (oldFlightAttendantId.equals(flightAttendant)) {
+                    flightAttendantsUserIds.remove(flightAttendant);
+                    flightAttendantsUserIds.add(newFlightAttendantId);
                     return;
                 }
             }
+            NoSuchUserException ex = new NoSuchUserException("There is no such user(userId = " + oldFlightAttendantId + ") in flight attendants list");
+            log.error(ex);
+            throw ex;
+        } else {
+            IllegalEntityStateException ex = new IllegalEntityStateException("Aircrew #" + id + " is confirmed. You cannot change composition of the team");
+            log.error(ex);
+            throw ex;
         }
-        //todo throw exception NoSuchUser
 
     }
 
@@ -189,8 +198,23 @@ public class Aircrew implements Entity {
         }
     }
 
-    private static boolean isProperUserRole(User user, UserRole neededUserRole) {
+    private static boolean isProperUserRole(Long userId, UserRole neededUserRole) throws PersistenceException {
+        User user = getUserById(userId);
         return user.getRole().equals(neededUserRole);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Aircrew aircrew = (Aircrew) o;
+
+        return id.equals(aircrew.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

@@ -6,7 +6,7 @@ import domain.Entity;
  * Created by zom on 07.09.2017.
  */
 public class Airport implements Entity {
-    private Integer id;
+    private Long id;
     private Integer distanceToBaseAirport;
     private String city;
     private String IATACode;
@@ -14,14 +14,14 @@ public class Airport implements Entity {
     private boolean baseAirport;
 
     public static class Builder {
-        private Integer id;
+        private Long id;
         private Integer distanceToBaseAirport;
         private String city;
         private String IATACode;
         //        private static boolean baseAirportDefined;
         private boolean baseAirport;
 
-        public Builder id(Integer value) {
+        public Builder id(Long value) {
             this.id = value;
             return this;
         }
@@ -72,7 +72,7 @@ public class Airport implements Entity {
     }
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -101,5 +101,23 @@ public class Airport implements Entity {
 
     public static boolean isBaseAirportDefined() {
         return baseAirportDefined;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Airport airport = (Airport) o;
+
+        if (!id.equals(airport.id)) return false;
+        return IATACode.equals(airport.IATACode);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + IATACode.hashCode();
+        return result;
     }
 }

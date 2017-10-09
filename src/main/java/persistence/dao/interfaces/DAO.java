@@ -20,7 +20,7 @@ public interface DAO<T extends Entity> {
 
     T getById(Integer id) throws PersistenceException;
 
-    List<T> getAll() throws PersistenceException;
+    List<T> getAll(String tableName) throws PersistenceException;
 
     List<T> getPart(int from) throws PersistenceException;
 
@@ -32,5 +32,4 @@ public interface DAO<T extends Entity> {
 
     void closeConnection();
 
-    void deleteAllRecordsAndRestartSequence() throws PersistenceException;
 }

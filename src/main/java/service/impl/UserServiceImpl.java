@@ -2,6 +2,7 @@ package service.impl;
 
 import domain.entities.User;
 import exception.PersistenceException;
+import persistence.dao.impl.factory.DAOFactoryImpl;
 import service.UserService;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Override
     public void create(User object) throws PersistenceException {
-
+        DAOFactoryImpl.getInstance().getUserDAO().create(object);
     }
 
     @Override
@@ -21,22 +22,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Integer id) throws PersistenceException {
+    public void delete(Long id) throws PersistenceException {
 
     }
 
     @Override
-    public User getById(Integer id) throws PersistenceException {
+    public User getById(Long id) throws PersistenceException {
         return null;
     }
 
     @Override
-    public List<User> getAll() throws PersistenceException {
-        return null;
+    public List<User> getAll(String tableName) throws PersistenceException {
+        return DAOFactoryImpl.getInstance().getUserDAO().getAll(tableName);
     }
 
     @Override
-    public List<User> getPart(Integer from, Integer to) throws PersistenceException {
+    public List<User> getPart(Long from, Long to) throws PersistenceException {
         return null;
     }
 
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setAdmin(Integer id) throws PersistenceException {
+    public void setAdmin(Long id) throws PersistenceException {
 
     }
 }

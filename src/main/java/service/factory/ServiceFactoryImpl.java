@@ -1,5 +1,6 @@
 package service.factory;
 
+import org.apache.log4j.Logger;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -10,6 +11,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     private static volatile ServiceFactoryImpl instance;
 
+    private final Logger log = Logger.getLogger(getClass());
     private final UserService userService;
 
     public static ServiceFactoryImpl getInstance() {
@@ -19,6 +21,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = new ServiceFactoryImpl();
+                    instance.log.info("Service factory initialized");
                 }
             }
         }
@@ -31,6 +34,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     @Override
     public UserService getUserService() {
-        return null;
+        log.info("User Service returned");
+        return userService;
     }
 }

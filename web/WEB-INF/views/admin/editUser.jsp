@@ -17,9 +17,11 @@
                     <tr>
                         <th class="tg-yw4l">${user.id}</th>
                         <th class="tg-yw4l">${user.login}</th>
-                        <th class="tg-yw4l">${user.role.name}</th>
+                        <th class="tg-yw4l">${user.firstName}</th>
+                        <th class="tg-yw4l">${user.lastName}</th>
+                        <th class="tg-yw4l">${user.role}</th>
                         <c:choose>
-                            <c:when test="${user.role.name == 'admin'}">
+                            <c:when test="${user.role == 'ADMIN'}">
                                 <th class="tg-yw4l"> --- </th>
                             </c:when>
                             <c:otherwise>

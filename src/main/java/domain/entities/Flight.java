@@ -8,22 +8,24 @@ import java.sql.Timestamp;
 /**
  * Created by zom on 07.09.2017.
  */
-public class Flight implements Entity{
-    private Integer id;
-    private Aircrew aircrew;
-    private Aircrew backupAircrew;
-    private Airport destinationAirport;
+public class Flight implements Entity {
+    private Long id;
+    private Long aircraftId;
+    private Long aircrewId;
+    private Long backupAircrewId;
+    private Long destinationAirportId;
     private FlightType flightType;
     private Timestamp forwardDepartureDateTime;
     private Timestamp forwardArrivalDateTime;
     private Timestamp backwardDepartureDateTime;
     private Timestamp backwardArrivalDateTime;
 
-    public static class Builder{
-        private Integer id;
-        private Aircrew aircrew;
-        private Aircrew backupAircrew;
-        private Airport destinationAirport;
+    public static class Builder {
+        private Long id;
+        private Long aircraftId;
+        private Long aircrewId;
+        private Long backupAircrewId;
+        private Long destinationAirportId;
         private FlightType flightType;
         private Timestamp forwardDepartureDateTime;
         private Timestamp forwardArrivalDateTime;
@@ -33,61 +35,67 @@ public class Flight implements Entity{
         public Builder() {
         }
 
-        public Builder id (Integer id){
+        public Builder id(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder aircrew (Aircrew aircrew){
-            this.aircrew = aircrew;
+        public Builder aircraftId(Long aircraftId) {
+            this.aircraftId = aircraftId;
             return this;
         }
 
-        public Builder backupAircrew (Aircrew aircrew){
-            this.backupAircrew = aircrew;
+        public Builder aircrew(Long aircrewId) {
+            this.aircrewId = aircrewId;
             return this;
         }
 
-        public Builder destinationAirport (Airport destinationAirport){
-            this.destinationAirport = destinationAirport;
+        public Builder backupAircrew(Long aircrewId) {
+            this.backupAircrewId = aircrewId;
             return this;
         }
 
-        public Builder flightType (FlightType value){
+        public Builder destinationAirport(Long destinationAirportId) {
+            this.destinationAirportId = destinationAirportId;
+            return this;
+        }
+
+        public Builder flightType(FlightType value) {
             this.flightType = value;
             return this;
         }
 
-        public Builder forwardDepartureDateTime (Timestamp value){
+        public Builder forwardDepartureDateTime(Timestamp value) {
             this.forwardDepartureDateTime = value;
             return this;
         }
 
-        public Builder forwardArrivalDateTime (Timestamp value){
+        public Builder forwardArrivalDateTime(Timestamp value) {
             this.forwardArrivalDateTime = value;
             return this;
         }
 
-        public Builder backwardDepartureDateTime (Timestamp value){
+        public Builder backwardDepartureDateTime(Timestamp value) {
             this.backwardDepartureDateTime = value;
             return this;
         }
 
-        public Builder backwardArrivalDateTime (Timestamp value){
+        public Builder backwardArrivalDateTime(Timestamp value) {
             this.backwardArrivalDateTime = value;
             return this;
         }
 
-        public Flight build () {
+        public Flight build() {
             return new Flight(this);
         }
     }
 
     private Flight(Builder builder) {
         this.id = builder.id;
-        this.aircrew = builder.aircrew;
-        this.backupAircrew = builder.backupAircrew;
-        this.destinationAirport = builder.destinationAirport;
+        this.aircraftId = builder.aircraftId;
+        this.aircrewId = builder.aircrewId;
+        this.backupAircrewId = builder.backupAircrewId;
+        this.destinationAirportId = builder.destinationAirportId;
         this.flightType = builder.flightType;
         this.forwardDepartureDateTime = builder.forwardDepartureDateTime;
         this.forwardArrivalDateTime = builder.forwardArrivalDateTime;
@@ -97,23 +105,27 @@ public class Flight implements Entity{
 
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
 
-    public Aircrew getAircrew() {
-        return aircrew;
+    public Long getAircraftId() {
+        return aircraftId;
+    }
+
+    public Long getAircrewId() {
+        return aircrewId;
     }
 
 
-    public Aircrew getBackupAircrew() {
-        return backupAircrew;
+    public Long getBackupAircrewId() {
+        return backupAircrewId;
     }
 
 
-    public Airport getDestinationAirport() {
-        return destinationAirport;
+    public Long getDestinationAirportId() {
+        return destinationAirportId;
     }
 
 
@@ -141,4 +153,21 @@ public class Flight implements Entity{
         return backwardArrivalDateTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Flight flight = (Flight) o;
+
+        if (!id.equals(flight.id)) return false;
+        return destinationAirportId.equals(flight.destinationAirportId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + destinationAirportId.hashCode();
+        return result;
+    }
 }

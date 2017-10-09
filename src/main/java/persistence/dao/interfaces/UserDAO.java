@@ -25,7 +25,7 @@ public interface UserDAO extends DAO<User> {
     User getById(Integer id) throws PersistenceException;
 
     @Override
-    List<User> getAll() throws PersistenceException;
+    List<User> getAll(String tableName) throws PersistenceException;
 
     @Override
     List<User> getPart(int from) throws PersistenceException;
@@ -41,8 +41,6 @@ public interface UserDAO extends DAO<User> {
     @Override
     void closeConnection();
 
-    @Override
-    void deleteAllRecordsAndRestartSequence() throws PersistenceException;
 
     User getUserByLoginAndPassword(String login, String password) throws PersistenceException;
 

@@ -3,24 +3,45 @@ package persistence.dao.impl;
 import domain.entities.User;
 import domain.util.UserRole;
 import exception.PersistenceException;
-import persistence.dao.AbstractDAO;
 import persistence.dao.interfaces.UserDAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
- * Created by zom on 20.09.2017.
+ * Created by zom.
  */
 public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
-    public UserDAOImpl(Properties sqlQuery, Integer recordsOnPage) {
-        super(sqlQuery, recordsOnPage);
+    public UserDAOImpl() {
     }
+
+    @Override
+    protected List<User> parseResultSet(ResultSet resultSet) throws PersistenceException {
+        List<User> list = new ArrayList<>();
+
+        try {
+            while (resultSet.next()) {
+                User user = new User.Builder()
+                        .firstName(resultSet.getString("first_name"))
+                        .lastName(resultSet.getString("last_name"))
+                        .role(UserRole.valueOf(resultSet.getString("role_name")))
+                        .login(resultSet.getString("login"))
+                        .password(resultSet.getString("password"))
+                        .id(resultSet.getLong("id"))
+                        .build();
+                list.add(user);
+            }
+        } catch (SQLException e) {
+            log.error("Retrieving User data from DB error ");
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     @Override
     public User getUserByLoginAndPassword(String login, String password) throws PersistenceException {
@@ -50,14 +71,6 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
             throw new PersistenceException("Insertion exception");
         }
     }
-
-
-
-
-
-
-
-
 
 
 //    public User read(Integer key) throws SQLException {

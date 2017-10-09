@@ -1,8 +1,9 @@
 package persistence.connection;
 
 import exception.ConnectionException;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,19 +15,26 @@ public class ConnectionPool {
 
     private static volatile ConnectionPool instance;
     private static final Logger logger = Logger.getLogger(ConnectionPool.class.getName());
-    private static final String DB_DRIVER = "com.dao.jdbc.Driver";
-    private static final String DB_URL = "jdbc:dao://localhost:3306/javair";
+    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/javair";
     private static final String DB_USERNAME = "zatsMe";
     private static final String DB_PASSWORD = "ZRoot";
 
-    private BasicDataSource dataSource;
+    private DataSource dataSource;
 
     private ConnectionPool() {
-        dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(DB_DRIVER);
-        dataSource.setUrl(DB_URL);
-        dataSource.setUsername(DB_USERNAME);
-        dataSource.setPassword(DB_PASSWORD);
+        init();
+    }
+
+    private void init() {
+        PoolProperties poolProperties = new PoolProperties();
+        poolProperties.setUrl(DB_URL);
+        poolProperties.setDriverClassName(DB_DRIVER);
+        poolProperties.setUsername(DB_USERNAME);
+        poolProperties.setPassword(DB_PASSWORD);
+        poolProperties.setInitialSize(3);
+        dataSource = new DataSource();
+        dataSource.setPoolProperties(poolProperties);
     }
 
     public static ConnectionPool getInstance() {
@@ -44,6 +52,7 @@ public class ConnectionPool {
 
     public Connection getConnection() {
         Connection connection;
+
         try {
             connection = dataSource.getConnection();
             logger.info("Connection created successfully");
@@ -52,6 +61,8 @@ public class ConnectionPool {
             logger.error("Cannot create connection", e);
             throw new ConnectionException();
         }
+
     }
+
 
 }

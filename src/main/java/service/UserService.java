@@ -16,16 +16,16 @@ public interface UserService extends Service<User> {
     void update(User object) throws PersistenceException;
 
     @Override
-    void delete(Integer id) throws PersistenceException;
+    void delete(Long id) throws PersistenceException;
 
     @Override
-    User getById(Integer id) throws PersistenceException;
+    User getById(Long id) throws PersistenceException;
 
     @Override
-    List<User> getAll() throws PersistenceException;
+    List<User> getAll(String tableName) throws PersistenceException;
 
     @Override
-    List<User> getPart(Integer from, Integer to) throws PersistenceException;
+    List<User> getPart(Long from, Long to) throws PersistenceException;
 
     @Override
     Integer getCount() throws PersistenceException;
@@ -37,5 +37,5 @@ public interface UserService extends Service<User> {
 
     boolean isUserExists(String login, String email) throws PersistenceException;
 
-    void setAdmin(Integer id) throws PersistenceException;
+    void setAdmin(Long id) throws PersistenceException;
 }
