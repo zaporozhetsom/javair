@@ -108,6 +108,12 @@ public class Aircrew implements Entity {
         return id;
     }
 
+    @Override
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
+    }
 
 
     public boolean isAircrewConfirmed() {

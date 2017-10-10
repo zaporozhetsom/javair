@@ -4,6 +4,7 @@ import domain.entities.User;
 import domain.util.UserRole;
 import exception.PersistenceException;
 import persistence.dao.interfaces.UserDAO;
+import persistence.dao.util.SQLQueries;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
                         .login(resultSet.getString("login"))
                         .password(resultSet.getString("password"))
                         .id(resultSet.getLong("id"))
+                        .approved(resultSet.getInt("approved") == 1)
                         .build();
                 list.add(user);
             }
@@ -49,8 +51,18 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
     }
 
     @Override
-    public boolean isUserExists(String login, String email) throws PersistenceException {
-        return false;
+    public boolean isUserExists(String login) throws PersistenceException {
+        List<User> users = getAll(SQLQueries.TABLE_NAME_USER);
+        boolean exists = false;
+        for (User user :
+                users) {
+            if (login.equals(user.getLogin())) {
+                exists = true;
+                break;
+            }
+
+        }
+        return exists;
     }
 
     @Override
@@ -63,9 +75,10 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
         try {
             statement.setString(1, object.getFirstName());
             statement.setString(2, object.getLastName());
-            statement.setString(3, object.getRole().name());
-            statement.setString(4, object.getLogin());
-            statement.setString(5, object.getPassword());
+            statement.setString(3, object.getLogin());
+            statement.setString(4, object.getPassword());
+            statement.setString(5, object.getRole().name());
+            log.debug(statement);
         } catch (SQLException e) {
             log.error("Prepare statement for insert exception.", e);
             throw new PersistenceException("Insertion exception");

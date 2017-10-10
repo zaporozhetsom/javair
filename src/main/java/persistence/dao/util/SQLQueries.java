@@ -32,8 +32,8 @@ public final class SQLQueries {
     /**
      * 'SELECT ALL' queries
      */
-    private static final String SELECT_ALL_USER = "SELECT u.id, first_name, last_name, login, role.role_name, password " +
-            "FROM user u INNER JOIN user_roles role ON (role.id = u.role_id)";
+    private static final String SELECT_ALL_USER = "SELECT u.id, first_name, last_name, login, password, approved, " +
+            "role.role_name FROM user u INNER JOIN user_roles role ON (role.id = u.role_id)";
     private static final String SELECT_ALL_FLIGHT = "";
     private static final String SELECT_ALL_AIRCRAFT = "";
     private static final String SELECT_ALL_AIRCREW = "";
@@ -51,7 +51,14 @@ public final class SQLQueries {
     /**
      * 'CREATE' queries
      */
-    private static final String CREATE_USER = "";
+    private static final String CREATE_USER = "INSERT INTO user (first_name, last_name,login,password,role_id)\n" +
+            "VALUES (?,\n" +
+            "?,\n" +
+            "?,\n" +
+            "?,\n" +
+            "(SELECT id \n" +
+            "FROM user_roles\n" +
+            "WHERE role_name = ?))";
     private static final String CREATE_FLIGHT = "";
     private static final String CREATE_AIRCRAFT = "";
     private static final String CREATE_AIRCREW = "";
@@ -88,19 +95,19 @@ public final class SQLQueries {
         return SELECT_ALL.get(tableName);
     }
 
-   public String getSelectCountQuery(String tableName) {
+    public String getSelectCountQuery(String tableName) {
         return SELECT_COUNT.get(tableName);
     }
 
-   public String getCreateQuery(String tableName) {
+    public String getCreateQuery(String tableName) {
         return CREATE.get(tableName);
     }
 
-   public String getUpdateQuery(String tableName) {
+    public String getUpdateQuery(String tableName) {
         return UPDATE.get(tableName);
     }
 
-   public String getDeleteByIdQuery(String tableName) {
+    public String getDeleteByIdQuery(String tableName) {
         return DELETE_BY_ID.get(tableName);
     }
 

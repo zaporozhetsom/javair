@@ -14,7 +14,7 @@ public class Aircraft implements Entity {
     private Integer capacity;
     private Long aircraftLocationAirportId;
 
-    public static class Builder{
+    public static class Builder {
         private Long id;
         private String registrationIdentifier;
         private Long aircraftManufacturerId;
@@ -52,7 +52,7 @@ public class Aircraft implements Entity {
             return this;
         }
 
-        public Aircraft build(){
+        public Aircraft build() {
             return new Aircraft(this);
         }
     }
@@ -78,6 +78,13 @@ public class Aircraft implements Entity {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
     }
 
 

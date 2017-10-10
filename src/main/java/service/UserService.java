@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface UserService extends Service<User> {
     @Override
-    void create(User object) throws PersistenceException;
+    void create(User object, String tableName) throws PersistenceException;
 
     @Override
     void update(User object) throws PersistenceException;
@@ -35,7 +35,7 @@ public interface UserService extends Service<User> {
 
     User getUserByLoginPassword(String login, String password) throws PersistenceException;
 
-    boolean isUserExists(String login, String email) throws PersistenceException;
+    boolean isUserExists(String login) throws PersistenceException;
 
     void setAdmin(Long id) throws PersistenceException;
 }

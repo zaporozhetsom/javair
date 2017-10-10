@@ -109,6 +109,13 @@ public class Flight implements Entity {
         return id;
     }
 
+    @Override
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
+    }
+
 
     public Long getAircraftId() {
         return aircraftId;

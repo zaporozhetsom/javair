@@ -35,7 +35,7 @@ abstract class AbstractDAO<T extends Entity> implements DAO<T> {
 //        return sqlQuery.getProperty("select.all");
 //    }
 
-//    @Override
+    @Override
     public Integer createAndGetId(T object) throws PersistenceException {
 //        String sql = getSqlQueryCREATE();
         Integer id = 0;
@@ -82,7 +82,36 @@ abstract class AbstractDAO<T extends Entity> implements DAO<T> {
     }
 
     @Override
-    public void create(T object) throws PersistenceException {
+    public void create(T object, String table) throws PersistenceException {
+        String sql = SQLQueries.getInstance().getCreateQuery(table);
+        Long id = 0L;
+
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            prepareStatementINSERT(statement, object);
+            statement.executeUpdate();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    id =  resultSet.getLong(1);
+                    object.setId(id);
+                } else {
+                    throw new SQLException("No ID received");
+                }
+            }
+        } catch (SQLException e) {
+            log.error("[ADAO]Create object exception", e);
+            throw new PersistenceException("Create object exception");
+        } finally {
+            try {
+                if (connection.getAutoCommit()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                log.info("[ADAO]Close connection fail", e);
+            }
+        }
+//        return id;
 
     }
 

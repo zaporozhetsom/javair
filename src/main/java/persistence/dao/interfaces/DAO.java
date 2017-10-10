@@ -12,7 +12,7 @@ import java.util.List;
 public interface DAO<T extends Entity> {
     Integer createAndGetId(T object) throws PersistenceException;
 
-    void create(T object) throws PersistenceException;
+    void create(T object, String tableName) throws PersistenceException;
 
     void update(T object) throws PersistenceException;
 

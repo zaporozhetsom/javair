@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 
 
-@WebServlet(urlPatterns = {"/", "/admin/*"})
+@WebServlet(urlPatterns = {"/index.html", "/javair/*"})
 @MultipartConfig
 public class Controller extends HttpServlet {
     final Logger log = Logger.getLogger(getClass());

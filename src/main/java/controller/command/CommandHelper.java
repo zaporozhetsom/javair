@@ -1,7 +1,6 @@
 package controller.command;
 
-import local.Local;
-import persistence.dao.impl.factory.DAOFactoryImpl;
+import util.Local;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class UserServiceImpl implements UserService {
     @Override
-    public void create(User object) throws PersistenceException {
-        DAOFactoryImpl.getInstance().getUserDAO().create(object);
+    public void create(User object, String tableName) throws PersistenceException {
+        DAOFactoryImpl.getInstance().getUserDAO().create(object, tableName);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExists(String login, String email) throws PersistenceException {
-        return false;
+    public boolean isUserExists(String login) throws PersistenceException {
+        return DAOFactoryImpl.getInstance().getUserDAO().isUserExists(login);
     }
 
     @Override

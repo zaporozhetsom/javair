@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserDAO extends DAO<User> {
 
     @Override
-    void create(User object) throws PersistenceException;
+    void create(User object, String tableName) throws PersistenceException;
 
     @Override
     void update(User object) throws PersistenceException;
@@ -44,7 +44,7 @@ public interface UserDAO extends DAO<User> {
 
     User getUserByLoginAndPassword(String login, String password) throws PersistenceException;
 
-    boolean isUserExists(String login, String email) throws PersistenceException;
+    boolean isUserExists(String login) throws PersistenceException;
 
     void setAdmin(Integer id) throws PersistenceException;
 }

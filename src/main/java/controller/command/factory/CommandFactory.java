@@ -1,8 +1,8 @@
 package controller.command.factory;
 
 import controller.command.*;
-import controller.command.impl.user.AircraftCommand;
-import controller.command.impl.admin.UserCommand;
+import controller.command.impl.user.*;
+import controller.command.impl.admin.*;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -33,7 +33,9 @@ public class CommandFactory {
     private CommandFactory() {
         commands = new HashMap<>();
         commands.put("/index.html", new AircraftCommand());
-        commands.put("/editUser", new UserCommand());
+        commands.put("/admin/editUser", new UserCommand());
+        commands.put("/register", new RegistrationCommand());
+        commands.put("/", new RegistrationCommand());
     }
 
 

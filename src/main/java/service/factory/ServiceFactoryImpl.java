@@ -34,7 +34,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     @Override
     public UserService getUserService() {
-        log.info("User Service returned");
+        log.debug("User Service returned");
         return userService;
     }
 }

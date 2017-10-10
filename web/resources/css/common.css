@@ -1,0 +1,119 @@
+header #main-header {
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.header-block {
+    height: 80px;
+    text-align: center;
+    background-color: rgba(52, 182, 206, 0.86);
+}
+
+.price-block {
+    width: 100px;
+}
+
+#language {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.null-padding {
+    padding: 1px;
+}
+
+.center-text {
+    text-align: center;
+    font-size: large;
+    padding-top: 10px;
+}
+
+.center-text-div {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filter-block {
+    padding-top: 5px;
+    padding-bottom: 10px;
+    height: 30px;
+}
+
+a.item {
+    display: block;
+    position: relative;
+}
+
+a.item > img {
+    max-width: 100%;
+    height: auto;
+}
+
+a.item > span {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+    vertical-align: middle;
+}
+
+a.item:hover > span {
+    display: block;
+}
+
+.cars-page-image {
+    max-width: 100%;
+    padding: 1px;
+}
+
+.car-item {
+    margin: 1px;
+    height: 50px;
+    background-color: #d0e9c6;
+}
+
+.car-page-image > img {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+    max-width: 100%;
+}
+
+.car-page-info {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.error-message {
+    text-align: center;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.input-box label {
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+}
+
+footer {
+}

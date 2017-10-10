@@ -1,3 +1,11 @@
+$('#password1, #password2').on('keyup', function () {
+    if ($('#password1').val() == $('#password2').val()) {
+        $('#message').html('Matching').css('color', 'green');
+    } else
+        $('#message').html('Not Matching').css('color', 'red');
+})(jQuery);
+
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

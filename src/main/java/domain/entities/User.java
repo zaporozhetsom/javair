@@ -4,6 +4,10 @@ import domain.Entity;
 import domain.util.UserRole;
 import org.apache.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by zom on 14.09.2017.
  */
@@ -15,8 +19,10 @@ public class User implements Entity {
     private String login;
     private String password;
     private boolean approved;
+    private static final String SALT = "ClouD7";
 
     public static class Builder {
+
         private Long id;
         private String firstName;
         private String lastName;
@@ -71,11 +77,12 @@ public class User implements Entity {
             return this;
         }
 
-
-        public User build () {
+        public User build() {
             log.debug("build User");
             return new User(this);
         }
+
+
     }
 
     private User(Builder builder) {
@@ -93,7 +100,6 @@ public class User implements Entity {
     public Long getId() {
         return id;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -119,8 +125,16 @@ public class User implements Entity {
         return password;
     }
 
+
     public boolean isApproved() {
         return approved;
+    }
+
+    @Override
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
     }
 
     @Override
@@ -137,6 +151,7 @@ public class User implements Entity {
     @Override
     public int hashCode() {
         int result = id.hashCode();
+//        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + login.hashCode();
         return result;
     }
@@ -152,5 +167,29 @@ public class User implements Entity {
                 ", password='" + password + '\'' +
                 ", approved='" + approved + '\'' +
                 '}';
+    }
+
+    public static String hashPassword(String password) throws NoSuchAlgorithmException {
+        String st = password + SALT;
+        MessageDigest messageDigest;
+        byte[] digest = new byte[0];
+
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.reset();
+            messageDigest.update(st.getBytes(StandardCharsets.UTF_8));
+            digest = messageDigest.digest();
+        } finally {
+            //empty
+        }
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < digest.length; i++) {
+            String hex = Integer.toHexString(0xff & digest[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }
