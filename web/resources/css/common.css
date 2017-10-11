@@ -8,6 +8,18 @@ header #main-header {
     z-index: 99;
 }
 
+@font-face {
+    font-family: javairFonts;
+    src: url(../fonts/QuattrocentoSans-Bold.otf);
+}
+
+javair {
+    color: red;
+    font-family: javairFonts;
+    text-align: right;
+}
+
+
 .header-block {
     height: 80px;
     text-align: center;

@@ -1,5 +1,6 @@
 package service.factory;
 
+import service.FlightService;
 import service.UserService;
 
 /**
@@ -7,4 +8,6 @@ import service.UserService;
  */
 public interface ServiceFactory {
     UserService getUserService();
+
+    FlightService getFlightService();
 }

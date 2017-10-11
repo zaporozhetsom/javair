@@ -1,7 +1,6 @@
 package domain.entities;
 
 import domain.Entity;
-import domain.util.AircraftManufacturer;
 
 /**
  * Created by zom on 14.09.2017.

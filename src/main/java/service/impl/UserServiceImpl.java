@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getPart(Long from, Long to) throws PersistenceException {
+    public List<User> getPart(int from) throws PersistenceException {
         return null;
     }
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLoginPassword(String login, String password) throws PersistenceException {
-        return null;
+        return DAOFactoryImpl.getInstance().getUserDAO().getUserByLoginAndPassword(login, password);
     }
 
     @Override

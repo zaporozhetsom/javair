@@ -29,6 +29,7 @@
                                minlength="3"
                                value="${name}"
                                required
+                               autofocus
                                aria-describedby="basic-addon1">
                         <span class="input-group-addon" id="basic-addon1"><fmt:message key="registration.name"/></span>
                     </div>
@@ -43,7 +44,8 @@
                     </div>
                     </br>
                     <div class="input-group">
-                        <select class="form-control" id="role" name="role" aria-describedby="basic-addon0" required value="${role}">
+                        <select class="form-control" id="role" name="role" aria-describedby="basic-addon0" required
+                                value="${role}">
                             <option value="" disabled selected><fmt:message key="registration.role.select"/></option>
                             <option value="<fmt:message key="registration.role1"/>">
                                 <fmt:message key="registration.role1"/>
@@ -88,7 +90,7 @@
                                class="form-control"
                                placeholder="<fmt:message key="registration.password" />"
                                aria-describedby="basic-addon4" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br/>
+                               title="<fmt:message key="password.hint"/>"><br/>
                         <span class="input-group-addon" id="basic-addon4"><fmt:message
                                 key="registration.password"/></span>
                     </div>
@@ -98,7 +100,7 @@
                                class="form-control"
                                placeholder="<fmt:message key="registration.password.reenter" />"
                                aria-describedby="basic-addon5" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br/>
+                               title="<fmt:message key="password.hint"/>"><br/>
                         <span class="input-group-addon" id="basic-addon5"><fmt:message
                                 key="registration.password.reenter"/></span>
                         <span id='message'></span>

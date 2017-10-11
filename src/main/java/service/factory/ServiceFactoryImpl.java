@@ -1,7 +1,9 @@
 package service.factory;
 
 import org.apache.log4j.Logger;
+import service.FlightService;
 import service.UserService;
+import service.impl.FlightServiceImpl;
 import service.impl.UserServiceImpl;
 
 /**
@@ -13,6 +15,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     private final Logger log = Logger.getLogger(getClass());
     private final UserService userService;
+    private final FlightService flightService;
 
     public static ServiceFactoryImpl getInstance() {
         ServiceFactoryImpl localInstance = instance;
@@ -30,11 +33,17 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     private ServiceFactoryImpl() {
         userService = new UserServiceImpl();
+        flightService = new FlightServiceImpl();
     }
 
     @Override
     public UserService getUserService() {
         log.debug("User Service returned");
         return userService;
+    }
+
+    @Override
+    public FlightService getFlightService() {
+        return flightService;
     }
 }

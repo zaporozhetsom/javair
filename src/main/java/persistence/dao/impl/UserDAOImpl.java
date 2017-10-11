@@ -47,7 +47,24 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
     @Override
     public User getUserByLoginAndPassword(String login, String password) throws PersistenceException {
-        return null;
+        if(!isUserExists(login)){
+            log.error("There is no user \'" + login +"\' in DB");
+            throw new PersistenceException("There is no such user");
+        }
+        User neededUser = null;
+        List<User> users = getAll(SQLQueries.TABLE_NAME_USER);
+        for (User user :
+                users) {
+            if (login.equals(user.getLogin()) && password.equals(user.getPassword())) {
+                neededUser = user;
+                break;
+            }
+        }
+        if(neededUser == null){
+            log.error("Login and password do not match. Login = [" + login + "], password = [" + password + "]");
+            throw new PersistenceException("Login and password do not match ");
+        }
+        return neededUser;
     }
 
     @Override

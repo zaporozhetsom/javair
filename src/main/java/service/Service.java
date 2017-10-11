@@ -14,7 +14,7 @@ public interface Service<T extends Entity> {
     void delete(Long id) throws PersistenceException;
     T getById(Long id) throws PersistenceException;
     List<T> getAll(String tableName) throws PersistenceException;
-    List<T> getPart(Long from, Long to) throws PersistenceException;
+    List<T> getPart(int from) throws PersistenceException;
     Integer getCount() throws PersistenceException;
     Integer getItemsPerPage();
 }

@@ -33,8 +33,25 @@ public final class SQLQueries {
      * 'SELECT ALL' queries
      */
     private static final String SELECT_ALL_USER = "SELECT u.id, first_name, last_name, login, password, approved, " +
-            "role.role_name FROM user u INNER JOIN user_roles role ON (role.id = u.role_id)";
-    private static final String SELECT_ALL_FLIGHT = "";
+            "role.role_name FROM user u INNER JOIN user_roles role ON (role.id = u.role_id) ";
+    private static final String SELECT_ALL_FLIGHT = "SELECT f.id, ac.reg_id, amf.name, am.model, am.capacity, ft.name, \n" +
+            "f.fw_depart_date, f.fw_arriv_date, f.bw_depart_date, f.bw_arriv_date,\n" +
+            "acr.id, u.first_name, u.last_name, \n" +
+            "acr2.id, u2.first_name, u2.last_name,\n" +
+            "ap.city, ap.IATACode,\n" +
+            "apb.city, apb.IATACode \n" +
+            "\n" +
+            "FROM flight f \n" +
+            "JOIN aircraft ac ON (f.aircraft_id = ac.id) \n" +
+            "JOIN aircraft_model am ON (ac.model = am.id) \n" +
+            "JOIN aircraft_manufacturer amf ON (am.manufacturer_id = amf.id)\n" +
+            "JOIN flight_type ft ON (f.flight_type_id = ft.id)\n" +
+            "JOIN aircrew acr ON (f.aircrew_id = acr.id)\n" +
+            "JOIN aircrew acr2 ON (f.backup_aircrew_id = acr2.id)\n" +
+            "JOIN user u ON (acr.captain_id = u.id)\n" +
+            "JOIN user u2 ON (acr2.captain_id = u2.id)\n" +
+            "JOIN airport ap ON (f.dest_airport_id = ap.id)\n" +
+            "JOIN airport apb ON (apb.base_airport = 1) ";
     private static final String SELECT_ALL_AIRCRAFT = "";
     private static final String SELECT_ALL_AIRCREW = "";
     private static final String SELECT_ALL_AIRPORT = "";

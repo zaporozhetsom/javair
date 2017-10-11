@@ -6,7 +6,6 @@ import domain.entities.User;
 import domain.util.UserRole;
 import exception.PersistenceException;
 import persistence.dao.util.SQLQueries;
-import service.factory.ServiceFactory;
 import service.factory.ServiceFactoryImpl;
 import util.Local;
 import org.apache.log4j.Logger;
@@ -50,10 +49,6 @@ public class RegistrationCommand implements Command {
             if (!password1.equals(password2)) {
                 return redirectWithError(Local.PASSWORD_MISMATCH, request);
             }
-//            if (!Validation.isLoginValid(login)) {
-//                login = "";
-//                return redirectWithError(Local.INVALID_LOGIN, request);
-//            }
             else {
                 String password;
                 try {
@@ -90,7 +85,7 @@ public class RegistrationCommand implements Command {
         }
         request.setAttribute("title", Local.REGISTRATION_HEADER);
         request.setAttribute("headerText", Local.REGISTRATION_HEADER);
-        request.setAttribute("headerText", "header");
+        log.debug("getAttribute(\"headerText\") = " + request.getAttribute("headerText"));
         return "/views/user/register.jsp";
     }
 

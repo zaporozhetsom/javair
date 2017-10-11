@@ -32,15 +32,20 @@ public class CommandFactory {
 
     private CommandFactory() {
         commands = new HashMap<>();
-        commands.put("/index.html", new AircraftCommand());
+        commands.put("/index.html", new LoginCommand());
         commands.put("/admin/editUser", new UserCommand());
         commands.put("/register", new RegistrationCommand());
-        commands.put("/", new RegistrationCommand());
+        commands.put("/", new LoginCommand());
+        commands.put("/login", new LoginCommand());
+        commands.put("/flights", new FlightsCommand());
+
     }
 
 
     public Command getCommand(String uri) {
-        log.info("uri = " + uri);
-        return commands.get(uri);
+        Command command = commands.get(uri);
+        log.debug("uri = " + uri);
+        log.debug("command = " + command.getClass());
+        return command;
     }
 }

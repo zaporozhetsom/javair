@@ -9,4 +9,7 @@ public interface Local {
     String PASSWORD_WEAK = "password.weak";
     String REGISTRATION_HEADER = "registration";
     String INVALID_LOGIN = "login.error";
+    String LOGIN_HEADER = "login.header";
+    String AUTH_ERROR = "authentication.error";
+    String FLIGHTS_HEADER = "flights";
 }

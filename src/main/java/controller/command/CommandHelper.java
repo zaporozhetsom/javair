@@ -1,5 +1,6 @@
 package controller.command;
 
+import org.apache.log4j.Logger;
 import util.Local;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CommandHelper {
 
+    private static final Logger log = Logger.getLogger(CommandHelper.class);
     private static volatile CommandHelper instance;
 
     public static CommandHelper getInstance() {
@@ -43,6 +45,28 @@ public class CommandHelper {
         req.setAttribute("title", Local.ERROR_HEADER);
         req.setAttribute("headerText", Local.ERROR_HEADER);
         return "/WEB-INF/views/utility/error.jsp";
+    }
+
+    public int convertParameterToInt(String num) {
+        int result = 0;
+        if (num != null) {
+            try {
+                result = Integer.parseInt(num);
+            } catch (NumberFormatException e) {
+                log.error("convertParameterToInt(String num): Illegal argument num=" + num, e);
+            }
+        }
+        return result;
+    }
+
+    private float convertParameterToFloat(String num) {
+        float result = 0.0f;
+        try {
+            result = Float.parseFloat(num);
+        } catch (NumberFormatException e) {
+            log.error("convertParameterToFloat(String num): Illegal argument num=" + num, e);
+        }
+        return result;
     }
 
 }
