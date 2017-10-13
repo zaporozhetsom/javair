@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class Flight implements Entity {
     private Long id;
-    private Long aircraftId;
+    private String aircraftId;
     private Long aircrewId;
     private Long backupAircrewId;
     private Long destinationAirportId;
@@ -22,7 +22,7 @@ public class Flight implements Entity {
 
     public static class Builder {
         private Long id;
-        private Long aircraftId;
+        private String aircraftId;
         private Long aircrewId;
         private Long backupAircrewId;
         private Long destinationAirportId;
@@ -40,7 +40,7 @@ public class Flight implements Entity {
             return this;
         }
 
-        public Builder aircraftId(Long aircraftId) {
+        public Builder aircraftId(String aircraftId) {
             this.aircraftId = aircraftId;
             return this;
         }
@@ -117,7 +117,7 @@ public class Flight implements Entity {
     }
 
 
-    public Long getAircraftId() {
+    public String getAircraftId() {
         return aircraftId;
     }
 

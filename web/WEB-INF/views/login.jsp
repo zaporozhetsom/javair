@@ -34,7 +34,7 @@
                                    class="form-control"
                                    placeholder="<fmt:message key="login.password" />"
                                    aria-describedby="basic-addon4"
-                                   <%--pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"--%>
+                                   <%--pattern="(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,}"--%>
                                    title="<fmt:message key="password.hint"/>"><br/>
                             <span class="input-group-addon" id="basic-addon4">
                                 <fmt:message key="registration.password"/></span>

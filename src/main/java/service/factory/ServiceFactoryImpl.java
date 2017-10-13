@@ -1,8 +1,12 @@
 package service.factory;
 
 import org.apache.log4j.Logger;
+import service.AircraftService;
+import service.AirportService;
 import service.FlightService;
 import service.UserService;
+import service.impl.AircraftServiceImpl;
+import service.impl.AirportServiceImpl;
 import service.impl.FlightServiceImpl;
 import service.impl.UserServiceImpl;
 
@@ -13,9 +17,11 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
     private static volatile ServiceFactoryImpl instance;
 
-    private final Logger log = Logger.getLogger(getClass());
+    private static final Logger LOGGER = Logger.getLogger(ServiceFactoryImpl.class.getName());
     private final UserService userService;
     private final FlightService flightService;
+    private final AirportService airportService;
+    private final AircraftService aircraftService;
 
     public static ServiceFactoryImpl getInstance() {
         ServiceFactoryImpl localInstance = instance;
@@ -24,7 +30,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = new ServiceFactoryImpl();
-                    instance.log.info("Service factory initialized");
+                    LOGGER.info("Service factory initialized");
                 }
             }
         }
@@ -34,16 +40,28 @@ public class ServiceFactoryImpl implements ServiceFactory {
     private ServiceFactoryImpl() {
         userService = new UserServiceImpl();
         flightService = new FlightServiceImpl();
+        airportService = new AirportServiceImpl();
+        aircraftService = new AircraftServiceImpl();
     }
 
     @Override
     public UserService getUserService() {
-        log.debug("User Service returned");
+        LOGGER.debug("User Service returned");
         return userService;
     }
 
     @Override
     public FlightService getFlightService() {
         return flightService;
+    }
+
+    @Override
+    public AirportService getAirportService() {
+        return airportService;
+    }
+
+    @Override
+    public AircraftService getAircraftService() {
+        return aircraftService;
     }
 }

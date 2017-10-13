@@ -19,15 +19,26 @@ javair {
     text-align: right;
 }
 
+.vert-line-right {
+    border-right: groove;
+    border-right-color: rgba(33, 33, 33, 0.61);
+    border-right-width: 1px;
+
+}
 
 .header-block {
     height: 80px;
     text-align: center;
     background-color: rgba(52, 182, 206, 0.86);
+    padding-bottom: 10px;
 }
 
-.price-block {
-    width: 100px;
+.header {
+    padding-bottom: 30px;
+}
+
+.bottom-mar {
+    margin-bottom: 10px;
 }
 
 #language {
@@ -86,30 +97,6 @@ a.item:hover > span {
     display: block;
 }
 
-.cars-page-image {
-    max-width: 100%;
-    padding: 1px;
-}
-
-.car-item {
-    margin: 1px;
-    height: 50px;
-    background-color: #d0e9c6;
-}
-
-.car-page-image > img {
-    display: block;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: auto;
-    max-width: 100%;
-}
-
-.car-page-info {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
-}
 
 .error-message {
     text-align: center;

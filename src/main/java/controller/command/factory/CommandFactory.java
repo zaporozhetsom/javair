@@ -8,13 +8,11 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by zom on 19.09.2017.
- */
+
 public class CommandFactory {
     private static volatile CommandFactory instance;
     private final Map<String, Command> commands;
-    final Logger log = Logger.getLogger(getClass());
+    private static final Logger LOGGER = Logger.getLogger(CommandFactory.class.getName());
 
     public static CommandFactory getInstance() {
         CommandFactory localInstance = instance;
@@ -38,14 +36,19 @@ public class CommandFactory {
         commands.put("/", new LoginCommand());
         commands.put("/login", new LoginCommand());
         commands.put("/flights", new FlightsCommand());
+        commands.put("/logout", new LogoutCommand());
 
     }
 
 
     public Command getCommand(String uri) {
+        if (uri.startsWith("/flights")) {
+            return commands.get("/flights");
+        }
+
         Command command = commands.get(uri);
-        log.debug("uri = " + uri);
-        log.debug("command = " + command.getClass());
+        LOGGER.debug("uri = " + uri);
+        LOGGER.debug("command = " + command.getClass());
         return command;
     }
 }

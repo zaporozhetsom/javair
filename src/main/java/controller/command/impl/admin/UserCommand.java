@@ -14,7 +14,7 @@ import java.util.List;
  * Created by zom on 03.10.2017.
  */
 public class UserCommand implements Command {
-    final Logger log = Logger.getLogger(getClass());
+    private static final Logger LOGGER = Logger.getLogger(UserCommand.class.getName());
     private final String TABLE = SQLQueries.TABLE_NAME_USER;
 
     @Override
@@ -26,13 +26,13 @@ public class UserCommand implements Command {
         List<User> users;
         try {
             users = ServiceFactoryImpl.getInstance().getUserService().getAll(TABLE);
-            log.info("users = " + users);
+            LOGGER.info("users = " + users);
             request.setAttribute("users", users);
         } catch (PersistenceException e) {
             return CommandHelper.getInstance().setErrorPage(e.getMessage(), request);
         }
-//        request.setAttribute("title", Localization.CARS_HEADER);
-//        request.setAttribute("headerText", Localization.CARS_HEADER);
+//        request.setAttribute("title", Localization.HEADER);
+//        request.setAttribute("headerText", Localization.HEADER);
         return "/views/admin/editUser.jsp";
     }
 

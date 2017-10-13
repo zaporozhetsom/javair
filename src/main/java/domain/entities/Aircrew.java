@@ -6,9 +6,7 @@ import exception.IllegalEntityStateException;
 import exception.NoSuchUserException;
 import exception.PersistenceException;
 import org.apache.log4j.Logger;
-import service.factory.ServiceFactory;
 import service.factory.ServiceFactoryImpl;
-import service.impl.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

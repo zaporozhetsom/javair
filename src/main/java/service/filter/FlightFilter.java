@@ -12,10 +12,10 @@ public class FlightFilter {
     private final int airport;
     private final int minCapacity;
     private final Timestamp fwDepartDateTime;
-    private final String aircraftRegId;
+    private final int aircraftRegId;
     private final int aircraftModel;
 
-    private static final Logger log = Logger.getLogger(FlightFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(FlightFilter.class);
 
 
     public static class Builder {
@@ -23,51 +23,50 @@ public class FlightFilter {
         private int airport;
         private int minCapacity;
         private Timestamp fwDepartDateTime;
-        private String aircraftRegId;
+        private int aircraftRegId;
         private int aircraftModel;
-        final Logger log = Logger.getLogger(Builder.class.getClass());
 
         public Builder() {
         }
 
         public Builder flightType(int value) {
             this.flightType = value;
-            log.debug("flightType(value) = " + value);
+            LOGGER.debug("flightType(value) = " + value);
             return this;
         }
 
         public Builder airport(int value) {
             this.airport = value;
-            log.debug("airport(value) = " + value);
+            LOGGER.debug("airport(value) = " + value);
             return this;
         }
 
         public Builder minCapacity(int value) {
             this.minCapacity = value;
-            log.debug("minCapacity(value) = " + value);
+            LOGGER.debug("minCapacity(value) = " + value);
             return this;
         }
 
         public Builder fwDepartDateTime(Timestamp value) {
             this.fwDepartDateTime = value;
-            log.debug("fwDepartDateTime(value) = " + value);
+            LOGGER.debug("fwDepartDateTime(value) = " + value);
             return this;
         }
 
-        public Builder aircraftRegId(String value) {
+        public Builder aircraftRegId(int value) {
             this.aircraftRegId = value;
-            log.debug("aircraftRegId(value) = " + value);
+            LOGGER.debug("aircraftRegId(value) = " + value);
             return this;
         }
 
         public Builder aircraftModel(int value) {
             this.aircraftModel = value;
-            log.debug("aircraftModel(value) = " + value);
+            LOGGER.debug("aircraftModel(value) = " + value);
             return this;
         }
 
         public FlightFilter build() {
-            log.debug("build User");
+            LOGGER.debug("build filter");
             return new FlightFilter(this);
         }
     }
@@ -98,7 +97,7 @@ public class FlightFilter {
         return fwDepartDateTime;
     }
 
-    public String getAircraftRegId() {
+    public int getAircraftRegId() {
         return aircraftRegId;
     }
 
@@ -111,7 +110,7 @@ public class FlightFilter {
                 && (airport == 0)
                 && (minCapacity == 0)
                 && (fwDepartDateTime == null)
-                && (aircraftRegId == null)
+                && (aircraftRegId == 0)
                 && (aircraftModel == 0));
     }
 
@@ -137,23 +136,23 @@ public class FlightFilter {
             query.append("f.fw_depart_date >= ").append(fwDepartDateTime).append(" AND ");
             isEmpty = false;
         }
-        if (aircraftRegId != null) {
-            query.append("ac.reg_id = ").append(aircraftRegId).append(" AND ");
+        if (aircraftRegId != 0) {
+            query.append("ac.id = ").append(aircraftRegId).append(" AND ");
             isEmpty = false;
         }
         if (aircraftModel != 0) {
             query.append("am.id = ").append(aircraftModel).append(" AND ");
             isEmpty = false;
         }
-        log.debug("SQL query before cutting: " + query);
+        LOGGER.debug("SQL query before cutting: " + query);
         String subQuery;
         if (isEmpty) {
             subQuery = query.substring(0, query.length() - 6);
         } else {
             subQuery = query.substring(0, query.length() - 5);
         }
-        log.debug("SQL query after cutting: " + subQuery);
-        return subQuery;
+        LOGGER.debug("SQL query after cutting: " + subQuery);
+        return subQuery + " ORDER BY f.id";
     }
 
     @Override
@@ -168,8 +167,7 @@ public class FlightFilter {
         if (minCapacity != that.minCapacity) return false;
         if (fwDepartDateTime != null ? !fwDepartDateTime.equals(that.fwDepartDateTime) : that.fwDepartDateTime != null)
             return false;
-        if (aircraftRegId != null ? !aircraftRegId.equals(that.aircraftRegId) : that.aircraftRegId != null)
-            return false;
+        if (aircraftRegId != that.aircraftRegId) return false;
         return aircraftModel != that.aircraftModel;
     }
 
@@ -179,7 +177,7 @@ public class FlightFilter {
         result = 31 * result + airport;
         result = 31 * result + minCapacity;
         result = 31 * result + (fwDepartDateTime != null ? fwDepartDateTime.hashCode() : 0);
-        result = 31 * result + (aircraftRegId != null ? aircraftRegId.hashCode() : 0);
+        result = 31 * result + aircraftRegId;
         result = 31 * result + aircraftModel;
         return result;
     }

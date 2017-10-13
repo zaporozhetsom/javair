@@ -18,7 +18,6 @@ public class Airport implements Entity {
         private Integer distanceToBaseAirport;
         private String city;
         private String IATACode;
-        //        private static boolean baseAirportDefined;
         private boolean baseAirport;
 
         public Builder id(Long value) {

@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -20,33 +21,38 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/index.html", "/javair/*"})
 @MultipartConfig
 public class Controller extends HttpServlet {
-    final Logger log = Logger.getLogger(getClass());
+    private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("doGet. request = " + req);
+        LOGGER.debug("doGet. request = " + req);
         executeCommand(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("doPost. request = " + req);
+        LOGGER.debug("doPost. request = " + req);
         executeCommand(req, resp);
     }
 
     private void executeCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(15 * 60); //interval in seconds
+
         String path = request.getPathInfo();
         Command command = CommandFactory.getInstance().getCommand(path);
 
-        log.debug("request.getPathInfo = " + path);
-        log.debug("command = " + command);
+        LOGGER.debug("request.getPathInfo = " + path);
+        LOGGER.debug("command = " + command);
 
         if (command != null) {
-            String jspView = command.execute(request); //CommandFactory.getInstance().getCommand(path).execute(request);
+            String jspView = command.execute(request);
             request.getRequestDispatcher("/WEB-INF" + jspView).forward(request, response);
         } else {
             String page = CommandHelper.getInstance().setErrorPage("404", "Not found", request);
             request.getRequestDispatcher(page).forward(request, response);
         }
     }
+
+
 }

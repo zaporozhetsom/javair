@@ -38,7 +38,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
                 list.add(user);
             }
         } catch (SQLException e) {
-            log.error("Retrieving User data from DB error ");
+            LOGGER.error("Retrieving User data from DB error ");
             e.printStackTrace();
         }
         return list;
@@ -48,7 +48,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
     @Override
     public User getUserByLoginAndPassword(String login, String password) throws PersistenceException {
         if(!isUserExists(login)){
-            log.error("There is no user \'" + login +"\' in DB");
+            LOGGER.error("There is no user \'" + login +"\' in DB");
             throw new PersistenceException("There is no such user");
         }
         User neededUser = null;
@@ -61,7 +61,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
             }
         }
         if(neededUser == null){
-            log.error("Login and password do not match. Login = [" + login + "], password = [" + password + "]");
+            LOGGER.error("Login and password do not match. Login = [" + login + "], password = [" + password + "]");
             throw new PersistenceException("Login and password do not match ");
         }
         return neededUser;
@@ -95,37 +95,12 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
             statement.setString(3, object.getLogin());
             statement.setString(4, object.getPassword());
             statement.setString(5, object.getRole().name());
-            log.debug(statement);
+            LOGGER.debug(statement);
         } catch (SQLException e) {
-            log.error("Prepare statement for insert exception.", e);
+            LOGGER.error("Prepare statement for insert exception.", e);
             throw new PersistenceException("Insertion exception");
         }
     }
 
 
-//    public User read(Integer key) throws SQLException {
-//        String sql = "SELECT * FROM javair.user WHERE user_id = ?;";
-//        PreparedStatement statement = connection.prepareStatement(sql);
-//
-//        statement.setInt(1,key);
-//
-//        ResultSet resultSet = statement.executeQuery();
-//        resultSet.next();
-//
-//        User user = new User.Builder() //todo clean this up!!!
-//                .id(1)
-//                .firstName("John")
-//                .lastName("Peterson")
-//                .login("Jjjjj")
-//                .password("QWERTY")
-//                .role(UserRole.ADMIN)
-//                .build();
-//        user.setId(resultSet.getInt("user_id"));
-//        user.setFirstName(resultSet.getString("first_name"));
-//        user.setLastName(resultSet.getString("last_name"));
-//        user.setRole(resultSet.getString("user_role"));
-//        user.setLogin(resultSet.getString("login"));
-//        user.setPassword(resultSet.getString("password"));
-//        return user;
-//    }
 }

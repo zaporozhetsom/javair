@@ -14,9 +14,11 @@ public final class SQLQueries {
      */
     private static final Map<String, String> SELECT_ALL = new HashMap<>();
     private static final Map<String, String> SELECT_COUNT = new HashMap<>();
+    private static final Map<String, String> SELECT_COUNT_FILTER = new HashMap<>();
     private static final Map<String, String> CREATE = new HashMap<>();
     private static final Map<String, String> UPDATE = new HashMap<>();
     private static final Map<String, String> DELETE_BY_ID = new HashMap<>();
+    private static final Map<String, Integer> ITEMS_PER_PAGE = new HashMap<>();
 
 
     /**
@@ -34,12 +36,12 @@ public final class SQLQueries {
      */
     private static final String SELECT_ALL_USER = "SELECT u.id, first_name, last_name, login, password, approved, " +
             "role.role_name FROM user u INNER JOIN user_roles role ON (role.id = u.role_id) ";
-    private static final String SELECT_ALL_FLIGHT = "SELECT f.id, ac.reg_id, amf.name, am.model, am.capacity, ft.name, \n" +
+    private static final String SELECT_ALL_FLIGHT ="SELECT f.id, ac.reg_id, amf.name, am.model, am.capacity, ft.name, \n" +
             "f.fw_depart_date, f.fw_arriv_date, f.bw_depart_date, f.bw_arriv_date,\n" +
             "acr.id, u.first_name, u.last_name, \n" +
             "acr2.id, u2.first_name, u2.last_name,\n" +
-            "ap.city, ap.IATACode,\n" +
-            "apb.city, apb.IATACode \n" +
+            "ap.id, ap.city, ap.IATACode,\n" +
+            "apb.id, apb.city, apb.IATACode \n" +
             "\n" +
             "FROM flight f \n" +
             "JOIN aircraft ac ON (f.aircraft_id = ac.id) \n" +
@@ -52,9 +54,15 @@ public final class SQLQueries {
             "JOIN user u2 ON (acr2.captain_id = u2.id)\n" +
             "JOIN airport ap ON (f.dest_airport_id = ap.id)\n" +
             "JOIN airport apb ON (apb.base_airport = 1) ";
-    private static final String SELECT_ALL_AIRCRAFT = "";
+    private static final String SELECT_ALL_AIRCRAFT = "SELECT ac.id, ac.reg_id, ac.model, \n" +
+            "am.model, am.manufacturer_id, \n" +
+            "am.capacity, amf.name, amf.id, al.airport_id\n" +
+            "FROM aircraft ac\n" +
+            "JOIN aircraft_model am ON (ac.model = am.id)\n" +
+            "JOIN aircraft_manufacturer amf ON (am.manufacturer_id = amf.id)\n" +
+            "JOIN aircraft_locations al ON (ac.id = al.aircraft_id) ";
     private static final String SELECT_ALL_AIRCREW = "";
-    private static final String SELECT_ALL_AIRPORT = "";
+    private static final String SELECT_ALL_AIRPORT = "SELECT id, city, IATACode, base_airport, distance_to_base_airport FROM airport";
 
     /**
      * 'SELECT COUNT' queries
@@ -64,6 +72,13 @@ public final class SQLQueries {
     private static final String SELECT_COUNT_AIRCRAFT = "SELECT count(*) FROM aircraft";
     private static final String SELECT_COUNT_AIRCREW = "SELECT count(*) FROM aircrew";
     private static final String SELECT_COUNT_AIRPORT = "SELECT count(*) FROM airport";
+
+
+    private static final String SELECT_COUNT_FLIGHT_FILTER = "SELECT  count(*)\n" +
+            "FROM flight f \n" +
+            "JOIN aircraft ac ON (f.aircraft_id = ac.id) \n" +
+            "JOIN aircraft_model am ON (ac.model = am.id) \n" +
+            "JOIN airport ap ON (f.dest_airport_id = ap.id) ";
 
     /**
      * 'CREATE' queries
@@ -99,13 +114,29 @@ public final class SQLQueries {
     private static final String DELETE_BY_ID_AIRCREW = "";
     private static final String DELETE_BY_ID_AIRPORT = "";
 
+    /**
+     * 'Items per page' constants
+     */
+    private static final Integer ITEMS_PER_PAGE_USER = 12;
+    private static final Integer ITEMS_PER_PAGE_FLIGHT = 3;
+    private static final Integer ITEMS_PER_PAGE_AIRCRAFT = 16;
+    private static final Integer ITEMS_PER_PAGE_AIRCREW = 2;
+    private static final Integer ITEMS_PER_PAGE_AIRPORT = 20;
+
+    /**
+     * 'Pagination' subquery
+     */
+    private static final String PAGINATION_SUBQUERY = " LIMIT ? OFFSET ?";
+
 
     private SQLQueries() {
         initMapSelectAll();
         initMapCreate();
         initMapDelete();
         initMapSelectCount();
+        initMapSelectCountFilter();
         initMapUpdate();
+        initMapItemsPerPage();
     }
 
     public String getSelectAllQuery(String tableName) {
@@ -114,6 +145,10 @@ public final class SQLQueries {
 
     public String getSelectCountQuery(String tableName) {
         return SELECT_COUNT.get(tableName);
+    }
+
+    public String getSelectCountFilterQuery(String tableName) {
+        return SELECT_COUNT_FILTER.get(tableName);
     }
 
     public String getCreateQuery(String tableName) {
@@ -128,6 +163,13 @@ public final class SQLQueries {
         return DELETE_BY_ID.get(tableName);
     }
 
+    public String getPaginationQuery(String tableName) {
+        return getSelectAllQuery(tableName) + PAGINATION_SUBQUERY;
+    }
+
+    public int getItemsPerPage(String tableName) {
+        return ITEMS_PER_PAGE.get(tableName);
+    }
 
     private void initMapSelectAll() {
         SELECT_ALL.put(TABLE_NAME_USER, SELECT_ALL_USER);
@@ -137,12 +179,18 @@ public final class SQLQueries {
         SELECT_ALL.put(TABLE_NAME_AIRPORT, SELECT_ALL_AIRPORT);
     }
 
+
     private void initMapSelectCount() {
         SELECT_COUNT.put(TABLE_NAME_USER, SELECT_COUNT_USER);
         SELECT_COUNT.put(TABLE_NAME_FLIGHT, SELECT_COUNT_FLIGHT);
         SELECT_COUNT.put(TABLE_NAME_AIRCRAFT, SELECT_COUNT_AIRCRAFT);
         SELECT_COUNT.put(TABLE_NAME_AIRCREW, SELECT_COUNT_AIRCREW);
         SELECT_COUNT.put(TABLE_NAME_AIRPORT, SELECT_COUNT_AIRPORT);
+    }
+
+    private void initMapSelectCountFilter() {
+        SELECT_COUNT_FILTER.put(TABLE_NAME_FLIGHT, SELECT_COUNT_FLIGHT_FILTER);
+
     }
 
     private void initMapCreate() {
@@ -167,6 +215,14 @@ public final class SQLQueries {
         DELETE_BY_ID.put(TABLE_NAME_AIRCRAFT, DELETE_BY_ID_AIRCRAFT);
         DELETE_BY_ID.put(TABLE_NAME_AIRCREW, DELETE_BY_ID_AIRCREW);
         DELETE_BY_ID.put(TABLE_NAME_AIRPORT, DELETE_BY_ID_AIRPORT);
+    }
+
+    private void initMapItemsPerPage() {
+        ITEMS_PER_PAGE.put(TABLE_NAME_USER, ITEMS_PER_PAGE_USER);
+        ITEMS_PER_PAGE.put(TABLE_NAME_FLIGHT, ITEMS_PER_PAGE_FLIGHT);
+        ITEMS_PER_PAGE.put(TABLE_NAME_AIRCRAFT, ITEMS_PER_PAGE_AIRCRAFT);
+        ITEMS_PER_PAGE.put(TABLE_NAME_AIRCREW, ITEMS_PER_PAGE_AIRCREW);
+        ITEMS_PER_PAGE.put(TABLE_NAME_AIRPORT, ITEMS_PER_PAGE_AIRPORT);
     }
 
 

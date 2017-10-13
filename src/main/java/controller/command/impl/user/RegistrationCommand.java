@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by zom on 09.10.2017.
  */
 public class RegistrationCommand implements Command {
-    private static final Logger log = Logger.getLogger(RegistrationCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
 
     private String name;
     private String lastname;
@@ -36,7 +36,7 @@ public class RegistrationCommand implements Command {
             role = request.getParameter("role");
             password1 = request.getParameter("password1");
             password2 = request.getParameter("password2");
-            log.debug("name " + name +
+            LOGGER.debug("name " + name +
                     ", lastname " + lastname +
                     ", login " + login +
                     ", password1 " + password1 +
@@ -54,7 +54,7 @@ public class RegistrationCommand implements Command {
                 try {
                     password = User.hashPassword(password1);
                 } catch (NoSuchAlgorithmException e) {
-                    log.error("Hashing password exception", e);
+                    LOGGER.error("Hashing password exception", e);
                     return CommandHelper.getInstance().setErrorPage(e.getMessage(), request);
                 }
                 User user = new User.Builder()
@@ -85,7 +85,7 @@ public class RegistrationCommand implements Command {
         }
         request.setAttribute("title", Local.REGISTRATION_HEADER);
         request.setAttribute("headerText", Local.REGISTRATION_HEADER);
-        log.debug("getAttribute(\"headerText\") = " + request.getAttribute("headerText"));
+        LOGGER.debug("getAttribute(\"headerText\") = " + request.getAttribute("headerText"));
         return "/views/user/register.jsp";
     }
 

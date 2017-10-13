@@ -10,23 +10,23 @@ import java.util.List;
  * Created by zom on 03.10.2017.
  */
 public interface DAO<T extends Entity> {
-    Integer createAndGetId(T object) throws PersistenceException;
+    Integer createAndGetId(T object, String tableName) throws PersistenceException;
 
     void create(T object, String tableName) throws PersistenceException;
 
-    void update(T object) throws PersistenceException;
+    void update(T object, String tableName) throws PersistenceException;
 
-    void delete(Integer id) throws PersistenceException;
+    void delete(Integer id, String tableName) throws PersistenceException;
 
-    T getById(Integer id) throws PersistenceException;
+    T getById(Integer id, String tableName) throws PersistenceException;
 
     List<T> getAll(String tableName) throws PersistenceException;
 
-    List<T> getPart(int from) throws PersistenceException;
+    List<T> getPart(int from, String tableName) throws PersistenceException;
 
-    Integer getCount() throws PersistenceException;
+    Integer getCount(String tableName) throws PersistenceException;
 
-    Integer getRecordsOnPage();
+    Integer getItemsPerPage(String tableName);
 
     void setConnection(Connection connection);
 

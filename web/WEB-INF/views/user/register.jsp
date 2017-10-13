@@ -46,7 +46,8 @@
                     <div class="input-group">
                         <select class="form-control" id="role" name="role" aria-describedby="basic-addon0" required
                                 value="${role}">
-                            <option value="" disabled selected><fmt:message key="registration.role.select"/></option>
+                            <option value="" disabled <c:if test="${empty role}">selected</c:if>>
+                                <fmt:message key="registration.role.select"/></option>
                             <option value="<fmt:message key="registration.role1"/>">
                                 <fmt:message key="registration.role1"/>
                             </option>
@@ -81,7 +82,9 @@
                     <div class="input-group">
                         <input id="login" type="text" name="login" minlength="5" required class="form-control"
                                placeholder="<fmt:message key="registration.login" />"
-                               aria-describedby="basic-addon3" value="${login}"><br/>
+                               aria-describedby="basic-addon3" value="${login}"
+                               oninvalid="this.setCustomValidity('<fmt:message key="registration.login.invalid" />')"
+                               oninput="setCustomValidity('')"><br/>
                         <span class="input-group-addon" id="basic-addon3"><fmt:message key="registration.login"/></span>
                     </div>
                     </br>
@@ -89,7 +92,7 @@
                         <input id="password1" type="password" name="password1" minlength="5" required
                                class="form-control"
                                placeholder="<fmt:message key="registration.password" />"
-                               aria-describedby="basic-addon4" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                               aria-describedby="basic-addon4" pattern="(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,}"
                                title="<fmt:message key="password.hint"/>"><br/>
                         <span class="input-group-addon" id="basic-addon4"><fmt:message
                                 key="registration.password"/></span>
@@ -99,7 +102,7 @@
                         <input id="password2" type="password" name="password2" minlength="5" required
                                class="form-control"
                                placeholder="<fmt:message key="registration.password.reenter" />"
-                               aria-describedby="basic-addon5" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                               aria-describedby="basic-addon5" pattern="(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,}"
                                title="<fmt:message key="password.hint"/>"><br/>
                         <span class="input-group-addon" id="basic-addon5"><fmt:message
                                 key="registration.password.reenter"/></span>

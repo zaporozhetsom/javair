@@ -26,7 +26,7 @@ public class Aircraft implements Entity {
             return this;
         }
 
-        public Builder manufacturer(Long value) {
+        public Builder aircraftManufacturerId(Long value) {
             this.aircraftManufacturerId = value;
             return this;
         }
@@ -41,7 +41,7 @@ public class Aircraft implements Entity {
             return this;
         }
 
-        public Builder aircraftLocation(Long value) {
+        public Builder aircraftLocationAirportId(Long value) {
             this.aircraftLocationAirportId = value;
             return this;
         }

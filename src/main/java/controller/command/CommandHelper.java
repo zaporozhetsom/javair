@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CommandHelper {
 
-    private static final Logger log = Logger.getLogger(CommandHelper.class);
+    private static final Logger LOGGER = Logger.getLogger(CommandHelper.class);
     private static volatile CommandHelper instance;
 
     public static CommandHelper getInstance() {
@@ -53,20 +53,11 @@ public class CommandHelper {
             try {
                 result = Integer.parseInt(num);
             } catch (NumberFormatException e) {
-                log.error("convertParameterToInt(String num): Illegal argument num=" + num, e);
+                LOGGER.error("convertParameterToInt(String num): Illegal argument num=" + num, e);
             }
         }
         return result;
     }
 
-    private float convertParameterToFloat(String num) {
-        float result = 0.0f;
-        try {
-            result = Float.parseFloat(num);
-        } catch (NumberFormatException e) {
-            log.error("convertParameterToFloat(String num): Illegal argument num=" + num, e);
-        }
-        return result;
-    }
 
 }

@@ -3,7 +3,6 @@ package service;
 import domain.entities.User;
 import exception.PersistenceException;
 
-import java.util.List;
 
 /**
  * Created by zom on 03.10.2017.

@@ -37,17 +37,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getPart(int from) throws PersistenceException {
+    public List<User> getPart(int page, String tableName) throws PersistenceException {
         return null;
     }
 
     @Override
-    public Integer getCount() throws PersistenceException {
+    public Integer getCount(String tableName) throws PersistenceException {
         return null;
     }
 
     @Override
-    public Integer getItemsPerPage() {
+    public Integer getItemsPerPage(String tableName) {
         return null;
     }
 

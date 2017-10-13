@@ -4,7 +4,6 @@ import domain.entities.User;
 import exception.PersistenceException;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,24 +15,24 @@ public interface UserDAO extends DAO<User> {
     void create(User object, String tableName) throws PersistenceException;
 
     @Override
-    void update(User object) throws PersistenceException;
+    void update(User object, String tableName) throws PersistenceException;
 
     @Override
-    void delete(Integer id) throws PersistenceException;
+    void delete(Integer id, String tableName) throws PersistenceException;
 
     @Override
-    User getById(Integer id) throws PersistenceException;
+    User getById(Integer id, String tableName) throws PersistenceException;
 
     @Override
     List<User> getAll(String tableName) throws PersistenceException;
 
     @Override
-    List<User> getPart(int from) throws PersistenceException;
+    List<User> getPart(int from, String tableName) throws PersistenceException;
 
     @Override
-    Integer getCount() throws PersistenceException;
+    Integer getCount(String tableName) throws PersistenceException;
 
-    Integer getRecordsOnPage();
+    Integer getItemsPerPage(String tableName);
 
     @Override
     void setConnection(Connection connection);

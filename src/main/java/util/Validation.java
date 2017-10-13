@@ -10,10 +10,10 @@ public final class Validation {
             return false;
         }
 
-        return password1.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}");
+        return password1.matches("(?=.*\\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,}");
     }
 
-    public static boolean isLoginValid(String login) {
+    public static boolean isInputTextValid(String text) {
         return true;//todo write login validation
     }
 }

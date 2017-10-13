@@ -4,10 +4,11 @@ import controller.command.Command;
 import controller.command.CommandHelper;
 import domain.entities.Aircraft;
 import domain.entities.Airport;
+import domain.entities.Dummy;
 import domain.entities.Flight;
-import domain.util.FlightType;
 import exception.PersistenceException;
 import org.apache.log4j.Logger;
+import persistence.dao.util.SQLQueries;
 import service.factory.ServiceFactoryImpl;
 import service.filter.FlightFilter;
 import util.Local;
@@ -18,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class FlightsCommand implements Command {
-    private static final Logger log = Logger.getLogger(FlightsCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(FlightsCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -41,24 +42,31 @@ public class FlightsCommand implements Command {
         FlightFilter filter = createFilters(request);
 
         try {
-//            List<FlightType> types = ServiceFactoryImpl.getInstance().getFlightTypeService().getAll();
-//            request.setAttribute("flight-types", types);
-//
-//            List<Airport> airports = ServiceFactoryImpl.getInstance().getAirportService().getAll();
-//            request.setAttribute("airports", airports);
-//
-//            List<Aircraft> aircrafts = ServiceFactoryImpl.getInstance().getAircraftService().getAll();
-//            request.setAttribute("airports", airports);
 
+            List<Airport> airports = ServiceFactoryImpl.getInstance().getAirportService().getAll(SQLQueries.TABLE_NAME_AIRPORT);
+            request.setAttribute("airports", airports);
+
+            List<Aircraft> aircrafts = ServiceFactoryImpl.getInstance().getAircraftService().getAll(SQLQueries.TABLE_NAME_AIRCRAFT);
+            request.setAttribute("aircrafts", aircrafts);
+
+            List<Dummy> models = ServiceFactoryImpl.getInstance().getAircraftService().getAllModels(SQLQueries.TABLE_NAME_AIRCRAFT);
+            request.setAttribute("models", models);
+
+            List<Dummy> manufacturers = ServiceFactoryImpl.getInstance().getAircraftService().getAllManufacturers(SQLQueries.TABLE_NAME_AIRCRAFT);
+            request.setAttribute("manufacturers", manufacturers);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("airports", airports);
 
             List<Flight> flights;
             int lastPage;
             int itemsCount;
-            int itemsPerPage = ServiceFactoryImpl.getInstance().getFlightService().getItemsPerPage();
+            String tableName = SQLQueries.TABLE_NAME_FLIGHT;
+            int itemsPerPage = ServiceFactoryImpl.getInstance().getFlightService().getItemsPerPage(tableName);
 
             if (filter == null || filter.isEmpty()) {
-                flights = ServiceFactoryImpl.getInstance().getFlightService().getPart(page);
-                itemsCount = ServiceFactoryImpl.getInstance().getFlightService().getCount();
+                flights = ServiceFactoryImpl.getInstance().getFlightService().getPart(page,tableName);
+                itemsCount = ServiceFactoryImpl.getInstance().getFlightService().getCount(tableName);
 
             } else {
                 flights = ServiceFactoryImpl.getInstance().getFlightService().getPart(page, filter);
@@ -70,6 +78,15 @@ public class FlightsCommand implements Command {
                 request.setAttribute("currentPage", page);
                 request.setAttribute("lastPage", lastPage);
                 request.setAttribute("flights", flights);
+//                if(filter.getAirport()!=0){
+//                    request.setAttribute("airport", filter.getAirport());
+//                }
+//                if(filter.getAircraftRegId()!=0){
+//                    request.setAttribute("aircraft", filter.getAircraftRegId());
+//                }
+//                if(filter.getAircraftModel()!=0){
+//                    request.setAttribute("model", filter.getAircraftModel());
+//                }
             } else {
                 request.setAttribute("error", "No flights found");
             }
@@ -87,8 +104,8 @@ public class FlightsCommand implements Command {
         String airport = request.getParameter("airport");
         String minCapacity = request.getParameter("minCapacity");
         String fwDepartDateTime = request.getParameter("fwDepartDateTime");
-        String aircraftRegId = request.getParameter("aircraftRegId");
-        String aircraftModel = request.getParameter("aircraftModel");
+        String aircraftRegId = request.getParameter("aircraft");
+        String aircraftModel = request.getParameter("model");
 
         int flightTypeFilter = 0;
         if (!"all".equals(flightType) && flightType != null) {
@@ -106,12 +123,12 @@ public class FlightsCommand implements Command {
         if (fwDepartDateTime != null) {
             fwDepartDateTimeFilter = Timestamp.valueOf(fwDepartDateTime);
         }
-        String aircraftRegIdFilter = null;
-        if (aircraftRegId != null) {
-            aircraftRegIdFilter = aircraftRegId;
+        int aircraftRegIdFilter = 0;
+        if (!"all".equals(aircraftRegId) && aircraftRegId != null) {
+            aircraftRegIdFilter = CommandHelper.getInstance().convertParameterToInt(aircraftRegId);
         }
         int aircraftModelFilter = 0;
-        if (aircraftModel != null) {
+        if (!"all".equals(aircraftModel) && aircraftModel != null) {
             aircraftModelFilter = CommandHelper.getInstance().convertParameterToInt(aircraftModel);
         }
 

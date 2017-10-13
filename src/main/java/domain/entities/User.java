@@ -30,55 +30,55 @@ public class User implements Entity {
         private String login;
         private String password;
         private boolean approved;
-        final Logger log = Logger.getLogger(Builder.class.getClass());
+        private static final Logger LOGGER = Logger.getLogger(Builder.class.getClass());
 
         public Builder() {
         }
 
         public Builder id(Long id) {
             this.id = id;
-            log.debug("id = " + id);
+            LOGGER.debug("id = " + id);
             return this;
         }
 
         public Builder firstName(String firstName) {
             this.firstName = firstName;
-            log.debug("fname = " + firstName);
+            LOGGER.debug("fname = " + firstName);
             return this;
         }
 
         public Builder lastName(String lastName) {
             this.lastName = lastName;
-            log.debug("lname = " + lastName);
+            LOGGER.debug("lname = " + lastName);
             return this;
         }
 
         public Builder role(UserRole role) {
             this.role = role;
-            log.debug("role = " + role);
+            LOGGER.debug("role = " + role);
             return this;
         }
 
         public Builder login(String login) {
             this.login = login;
-            log.debug("login = " + login);
+            LOGGER.debug("login = " + login);
             return this;
         }
 
         public Builder password(String password) {
             this.password = password;
-            log.debug("password = " + password);
+            LOGGER.debug("password = " + password);
             return this;
         }
 
         public Builder approved(boolean approved) {
             this.approved = approved;
-            log.debug("password = " + approved);
+            LOGGER.debug("password = " + approved);
             return this;
         }
 
         public User build() {
-            log.debug("build User");
+            LOGGER.debug("build User");
             return new User(this);
         }
 
